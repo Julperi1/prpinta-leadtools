@@ -7,7 +7,7 @@ const mobile = computed(() => {
   return useDisplay().smAndDown;
 });
 
-provide('mobile', mobile);
+provide('mobile', mobile.value);
 </script>
 <template>
   <v-app>
