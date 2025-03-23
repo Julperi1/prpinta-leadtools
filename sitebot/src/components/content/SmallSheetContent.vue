@@ -24,6 +24,12 @@ function clickSmallAndCloseNoti() {
   notification.value = false;
 }
 
+// Function to close small sheet
+function closeSmallandCloseNoti() {
+  closeSmall();
+  notification.value = false;
+}
+
 // Initialize notification and start letter animation
 function initNotification() {
   notification.value = true;
@@ -79,7 +85,7 @@ function animateText(fullText, key, speed = 100, callback = null) {
         </v-card-subtitle>
       </v-card-title>
 
-      <button class="mr-4" @click.stop="closeSmall">
+      <button class="mr-4" @click.stop="closeSmallandCloseNoti">
         <v-icon>mdi-close</v-icon>
       </button>
     </v-sheet>
