@@ -4,10 +4,10 @@ import { ref, inject, watch } from 'vue';
 const url = import.meta.env.VITE_WEBSITE_URL;
 
 const error = ref(null);
-const data = ref({ name: null, email: null, phone: null, message: null });
+const data = ref({ name: null, email: null, phone: null, message: null, city: null });
 
 function submit() {
-  if (!validate('name') || !validate('email') || !validate('phone') || !validate('message')) {
+  if (!validate('name') || !validate('email') || !validate('phone') || !validate('message') || !validate('city')) {
     return;
   }
 
@@ -27,7 +27,10 @@ function validate(key) {
 
 defineExpose({
   reset() {
-    data.value = { name: null, email: null, phone: null, message: null };
+    for (const key in data.value) {
+      data.value[key] = null;
+    }
+
     error.value = null;
   },
 });
@@ -48,8 +51,12 @@ defineExpose({
       :error-messages="error === 'phone' ? ['Anna oikea puhelnnumero'] : []" @update:modelValue="validate('phone')">
     </v-text-field>
 
-    <v-textarea v-model="data.message" label="Mitä pyyntösi koskee?" density="compact" variant="solo-filled" flat
-      rows="4">
+    <v-text-field v-model="data.city" label="Kaupunki *" density="compact" variant="solo-filled" flat
+      :error-messages="error === 'city' ? ['Anna oikea puhelnnumero'] : []" rows="4">
+    </v-text-field>
+
+    <v-textarea v-model="data.message" auto-grow label="Mitä pyyntösi koskee?" density="compact" variant="solo-filled"
+      flat rows="4">
     </v-textarea>
 
     <v-btn @click="submit" color="primary" block flat>Lähetä</v-btn>

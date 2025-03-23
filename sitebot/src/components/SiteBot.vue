@@ -89,4 +89,8 @@ provide('closeSmall', closeSmall);
 .v-bottom-sheet>.v-bottom-sheet__content.v-overlay__content {
   border-radius: 10px 10px 0 0 !important;
 }
+
+.v-bottom-sheet>.v-bottom-sheet__content.v-overlay__content {
+  left: initial !important;
+}
 </style>

@@ -28,7 +28,7 @@ provide('back', back);
 <template>
   <v-card class="rounded-t-lg" elevation="0">
     <!-- Toolbar -->
-    <v-toolbar flat class="pa-1 pl-3 bg-white">
+    <v-toolbar flat class="py-1 pl-3 pr-4 bg-white">
       <v-avatar rounded="lg" size="50"
         image="https://prpintakasittely.fi/wp-content/uploads/2023/07/eeee-1024x1024.jpg">
       </v-avatar>
@@ -38,9 +38,11 @@ provide('back', back);
         <span v-else-if="view === 'contact'">Yhteydenottopyyntö</span>
         <span v-else-if="view === 'services'">Palvelumme</span>
       </v-card-title>
+
       <v-spacer></v-spacer>
+
       <button @click="reset" class="my-2">
-        <v-icon color="primary">mdi-refresh</v-icon>
+        <v-icon :color="view === 'menu' ? 'grey-lighten-2' : 'primary'">mdi-refresh</v-icon>
       </button>
       <button @click="closeFull" class="mx-2 my-2">
         <v-icon color="primary">mdi-close</v-icon>

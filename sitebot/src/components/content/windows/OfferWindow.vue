@@ -83,7 +83,7 @@ defineExpose({
     <v-select v-model="data.service" :items="services" label="Palvelu *" density="compact" variant="solo-filled" flat>
     </v-select>
 
-    <v-textarea v-model="data.message" label="Viestisi" rows="2" density="compact" variant="solo-filled" flat>
+    <v-textarea v-model="data.message" auto-grow label="Viestisi" rows="2" density="compact" variant="solo-filled" flat>
     </v-textarea>
 
     <v-btn @click="submit" color="primary" block flat>Lähetä</v-btn>
