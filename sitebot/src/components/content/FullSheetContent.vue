@@ -3,11 +3,23 @@ import { inject, provide, ref } from 'vue';
 
 import ContactWindow from '@/components/content/windows/ContactWindow.vue';
 import ServicesWindow from '@/components/content/windows/ServicesWindow.vue';
+import OfferWindow from '@/components/content/windows/OfferWindow.vue';
 
 const closeFull = inject('closeFull');
 const view = ref('menu');
 
+const offerWindow = ref(null);
+const contactWindow = ref(null);
+const servicesWindow = ref(null);
+
 function back() {
+  view.value = 'menu';
+}
+
+function reset() {
+  offerWindow.value.reset();
+  contactWindow.value.reset();
+
   view.value = 'menu';
 }
 
@@ -20,9 +32,17 @@ provide('back', back);
       <v-avatar rounded="lg" size="50"
         image="https://prpintakasittely.fi/wp-content/uploads/2023/07/eeee-1024x1024.jpg">
       </v-avatar>
-      <v-card-title>Tähän jotain tekstiä</v-card-title>
+      <v-card-title>
+        <span v-if="view === 'menu'">Valitse alta</span>
+        <span v-else-if="view === 'offer'">Tarjouspyyntö</span>
+        <span v-else-if="view === 'contact'">Yhteydenottopyyntö</span>
+        <span v-else-if="view === 'services'">Palvelumme</span>
+      </v-card-title>
       <v-spacer></v-spacer>
-      <button @click="closeFull" class="pa-2 ma-2">
+      <button @click="reset" class="my-2">
+        <v-icon color="primary">mdi-refresh</v-icon>
+      </button>
+      <button @click="closeFull" class="mx-2 my-2">
         <v-icon color="primary">mdi-close</v-icon>
       </button>
     </v-toolbar>
@@ -32,7 +52,7 @@ provide('back', back);
     <!-- Content -->
     <v-sheet class="pa-4 overflow-y-scroll" max-height="500">
       <v-window v-model="view" direction="vertical">
-        <v-window-item value="menu">
+        <v-window-item value="menu" eager>
           <v-sheet class="d-flex flex-column ga-2">
 
             <!-- Open offer form-->
@@ -70,16 +90,16 @@ provide('back', back);
 
         </v-window-item>
 
-        <v-window-item value="offer">
-
+        <v-window-item value="offer" eager>
+          <OfferWindow ref="offerWindow" />
         </v-window-item>
 
-        <v-window-item value="contact">
-          <ContactWindow />
+        <v-window-item value="contact" eager>
+          <ContactWindow ref="contactWindow" />
         </v-window-item>
 
-        <v-window-item value="services">
-          <ServicesWindow />
+        <v-window-item value="services" eager>
+          <ServicesWindow ref="servicesWindow" />
         </v-window-item>
       </v-window>
     </v-sheet>
