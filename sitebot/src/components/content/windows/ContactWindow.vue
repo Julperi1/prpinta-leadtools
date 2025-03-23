@@ -35,16 +35,16 @@ defineExpose({
 
 <template>
   <v-sheet class="mt-2 pb-2">
-    <v-text-field v-model="data.name" label="Nimi / Yritys" density="compact" variant="solo-filled" flat
+    <v-text-field v-model="data.name" label="Nimi / Yritys *" density="compact" variant="solo-filled" flat
       :error-messages="error === 'name' ? ['Anna oikea arvo'] : []" @update:modelValue="validate('name')">
     </v-text-field>
 
-    <v-text-field v-model="data.email" label="Sähköpostiosoite" type="email" density="compact" variant="solo-filled"
+    <v-text-field v-model="data.email" label="Sähköpostiosoite *" type="email" density="compact" variant="solo-filled"
       flat :error-messages="error === 'email' ? ['Anna oikea sähköpostiosoite'] : []"
       @update:modelValue="validate('email')">
     </v-text-field>
 
-    <v-text-field v-model="data.phone" label="Puhelinnumero" density="compact" variant="solo-filled" flat
+    <v-text-field v-model="data.phone" label="Puhelinnumero *" density="compact" variant="solo-filled" flat
       :error-messages="error === 'phone' ? ['Anna oikea puhelnnumero'] : []" @update:modelValue="validate('phone')">
     </v-text-field>
 
