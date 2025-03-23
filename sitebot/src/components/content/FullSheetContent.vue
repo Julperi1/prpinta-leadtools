@@ -1,7 +1,17 @@
 <script setup>
-import { inject } from 'vue';
+import { inject, provide, ref } from 'vue';
+
+import ContactWindow from '@/components/content/windows/ContactWindow.vue';
+import ServicesWindow from '@/components/content/windows/ServicesWindow.vue';
 
 const closeFull = inject('closeFull');
+const view = ref('menu');
+
+function back() {
+  view.value = 'menu';
+}
+
+provide('back', back);
 </script>
 <template>
   <v-card class="rounded-t-lg" elevation="0">
@@ -12,34 +22,66 @@ const closeFull = inject('closeFull');
       </v-avatar>
       <v-card-title>Tähän jotain tekstiä</v-card-title>
       <v-spacer></v-spacer>
-      <button @click="closeFull" class="pa-2 ma-2 bg-grey-lighten-4 rounded-pill">
-        <v-icon>mdi-close</v-icon>
+      <button @click="closeFull" class="pa-2 ma-2">
+        <v-icon color="primary">mdi-close</v-icon>
       </button>
     </v-toolbar>
 
     <v-divider></v-divider>
 
     <!-- Content -->
-    <v-sheet class="d-flex flex-column ga-2 pa-2 overflow-y-scroll" max-height="700">
-      <v-card class="pa-12" variant="tonal">
+    <v-sheet class="pa-4 overflow-y-scroll" max-height="500">
+      <v-window v-model="view" direction="vertical">
+        <v-window-item value="menu">
+          <v-sheet class="d-flex flex-column ga-2">
 
-      </v-card>
+            <!-- Open offer form-->
+            <v-card @click="view = 'offer'" class="py-2" color="primary" flat>
+              <v-card-title class="d-flex align-center justify-space-between">
+                Tarjouspyyntö
+                <v-icon>mdi-clipboard-outline</v-icon>
+              </v-card-title>
+            </v-card>
 
-      <v-card class="pa-12" variant="tonal">
+            <!-- Open contact form-->
+            <v-card @click="view = 'contact'" class="py-2" color="primary" flat>
+              <v-card-title class="d-flex align-center justify-space-between">
+                Yhteydenottopyyntö
+                <v-icon>mdi-account-box-outline</v-icon>
+              </v-card-title>
+            </v-card>
 
-      </v-card>
+            <!-- Open price calculator page-->
+            <v-card class="py-2" color="primary" flat>
+              <v-card-title class="d-flex align-center justify-space-between">
+                Maalauksen hintalaskuriin
+                <v-icon>mdi-calculator</v-icon>
+              </v-card-title>
+            </v-card>
 
-      <v-card class="pa-12" variant="tonal">
+            <!-- Open services page-->
+            <v-card @click="view = 'services'" class="py-2" color="primary" flat>
+              <v-card-title class="d-flex align-center justify-space-between">
+                Palvelumme
+                <v-icon>mdi-format-list-checkbox </v-icon>
+              </v-card-title>
+            </v-card>
+          </v-sheet>
 
-      </v-card> <v-card class="pa-12" variant="tonal">
+        </v-window-item>
 
-      </v-card>
+        <v-window-item value="offer">
 
-      <v-card class="pa-12" variant="tonal">
+        </v-window-item>
 
-      </v-card>
+        <v-window-item value="contact">
+          <ContactWindow />
+        </v-window-item>
 
+        <v-window-item value="services">
+          <ServicesWindow />
+        </v-window-item>
+      </v-window>
     </v-sheet>
-
   </v-card>
 </template>
