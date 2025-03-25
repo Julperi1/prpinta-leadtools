@@ -261,10 +261,10 @@ provide('computedPrice', computedPrice);
   <!-- Steps -->
   <v-sheet class="bg-grey-lighten-4 d-flex align-center justify-center">
     <v-sheet class="bg-transparent lf-steps d-flex py-2 position-relative">
-      <v-btn icon v-for="step in 5" :key="step" size="small" style="z-index: 2" :class="stepMargin(step)"
-        :color="stepColor(step)" flat>
+      <v-card icon v-for="step in 5" :key="step" style="z-index: 2" :class="stepMargin(step)" :color="stepColor(step)"
+        flat class="pa-1">
         <v-icon size="xx-large">{{ step == 5 ? 'mdi-check' : `mdi-numeric-${step}` }} </v-icon>
-      </v-btn>
+      </v-card>
 
       <v-divider class="position-absolute opacity-90" width="100%" thickness="5" :style="stepLineStyles"></v-divider>
     </v-sheet>
@@ -282,22 +282,25 @@ provide('computedPrice', computedPrice);
 
 
   <v-sheet class="d-flex justify-center">
-    <v-btn v-if="currentStep == 4" @click="submit()" :loading="loading" rounded color="green" flat size="large">
+    <v-card v-if="currentStep == 4" @click="submit()" :loading="loading" rounded color="green" flat
+      class="pa-1 px-4 text-button">
       <v-icon class="mr-2">mdi-check</v-icon>
       Katso hinta
-    </v-btn>
+    </v-card>
 
-    <v-btn v-else-if="currentStep !== 5" @click="tryNextStep()" rounded color="primary" flat size="large">
+    <v-card v-else-if="currentStep !== 5" @click="tryNextStep()" rounded color="primary" flat
+      class="pa-1 px-4 text-button">
       Seuraava
       <v-icon>mdi-arrow-right</v-icon>
-    </v-btn>
+    </v-card>
   </v-sheet>
 
   <v-sheet class="mt-4 d-flex justify-center">
-    <v-btn v-if="currentStep !== 4" @click="reset()" rounded color="error" flat size="small" variant="text">
+    <v-card v-if="currentStep !== 4" @click="reset()" rounded color="error" flat size="small" variant="text"
+      class="text-button px-2">
       <v-icon>mdi-refresh</v-icon>
       Aloita alusta
-    </v-btn>
+    </v-card>
   </v-sheet>
 
   <v-divider class="mt-4"></v-divider>
