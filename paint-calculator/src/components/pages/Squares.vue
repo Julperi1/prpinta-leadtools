@@ -12,7 +12,8 @@ defineExpose({ error, data });
     <v-sheet class="d-flex flex-column align-center justify-center" height="150">
       <v-sheet>
         <v-text-field v-model="data.squares" label="Neliöt" width="250" persistent-hint hint="Alimman kerroksen neliöt"
-          :error-messages="error ? ['Anna oikea arvo'] : []" density="comfortable" type="number" hide-spin-buttons>
+          :error-messages="error ? ['Anna oikea arvo'] : []" density="comfortable" type="number" hide-spin-buttons
+          variant="solo-filled" flat>
           <template v-slot:append-inner>
             m²
           </template>

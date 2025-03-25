@@ -13,15 +13,15 @@ defineExpose({ error, data });
     <v-sheet class="d-flex flex-column align-center justify-center">
       <v-sheet>
         <v-text-field v-model="data.name" label="Nimi / Yritys" width="250" density="compact"
-          :error-messages="error === 'name' ? ['Anna oikea arvo'] : []">
+          :error-messages="error === 'name' ? ['Anna oikea arvo'] : []" variant="solo-filled" flat>
         </v-text-field>
 
         <v-text-field v-model="data.email" label="Sähköpostiosoite" width="250" type="email" density="compact"
-          :error-messages="error === 'email' ? ['Anna oikea sähköpostiosoite'] : []">
+          :error-messages="error === 'email' ? ['Anna oikea sähköpostiosoite'] : []" variant="solo-filled" flat>
         </v-text-field>
 
         <v-text-field v-model="data.phone" label="Puhelinnumero" width="250" density="compact"
-          :error-messages="error === 'phone' ? ['Anna oikea puhelnnumero'] : []">
+          :error-messages="error === 'phone' ? ['Anna oikea puhelnnumero'] : []" variant="solo-filled" flat>
         </v-text-field>
       </v-sheet>
     </v-sheet>

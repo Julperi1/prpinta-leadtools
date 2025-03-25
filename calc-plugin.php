@@ -16,36 +16,44 @@ function prpinta_calc_shortcode() {
 }
 add_shortcode('prpinta_calc', 'prpinta_calc_shortcode');
 
+function prpinta_sitebot_shortcode() {
+    return '<div id="prpinta-sitebot"></div>';
+}
+add_shortcode('prpinta_sitebot', 'prpinta_sitebot_shortcode');
+
 /**
  * Enqueue necessary CSS and JS files if the shortcode is present on the page.
  */
-function prpinta_calc_enqueue_scripts() {
-    // Check if the current post or page contains the shortcode
-    if (is_singular() && has_shortcode(get_post()->post_content, 'prpinta_calc')) {
-        $plugin_dir = plugin_dir_path(__FILE__); // Get the plugin directory path
-        $js_files = glob($plugin_dir . '*.js'); // Get all .js files in the plugin folder
-        $css_files = glob($plugin_dir . '*.css'); // Get all .css files in the plugin folder
-        
-        // Enqueue JS files
-        foreach ($js_files as $js_file) {
-            $js_url = plugin_dir_url(__FILE__) . basename($js_file); // Get the file URL
-            wp_enqueue_script('prpinta_calc_js_' . basename($js_file), $js_url, array(), null, true); // Enqueue JS files
-        }
+function prpinta_tools_enqueue_scripts() {
+    $tools = ['calc', 'sitebot'];
 
-        // Enqueue CSS files
-        foreach ($css_files as $css_file) {
-            $css_url = plugin_dir_url(__FILE__) . basename($css_file); // Get the file URL
-            wp_enqueue_style('prpinta_calc_css_' . basename($css_file), $css_url); // Enqueue CSS files
-        }
+    foreach ($tools as $tool) {
+        // Check if the current post or page contains the shortcode
+        if (is_singular() && has_shortcode(get_post()->post_content, 'prpinta_' . $tool)) {
+            $plugin_dir = plugin_dir_path(__FILE__); // Get the plugin directory path
+            $js_files = glob($plugin_dir . '*.js'); // Get all .js files in the plugin folder
+            $css_files = glob($plugin_dir . '*.css'); // Get all .css files in the plugin folder
 
-        wp_localize_script('prpinta_calc_js_' . basename(reset($js_files)), 'prpinta_ajax', [
-            'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('prpinta_lead_nonce'),
-        ]);
+            // Enqueue JS files
+            foreach ($js_files as $js_file) {
+                $js_url = plugin_dir_url(__FILE__) . basename($js_file); // Get the file URL
+                wp_enqueue_script('prpinta_' . $tool . '_js_' . basename($js_file), $js_url, array(), null, true); // Enqueue JS files
+            }
+
+            // Enqueue CSS files
+            foreach ($css_files as $css_file) {
+                $css_url = plugin_dir_url(__FILE__) . basename($css_file); // Get the file URL
+                wp_enqueue_style('prpinta_' . $tool . '_css_' . basename($css_file), $css_url); // Enqueue CSS files
+            }
+
+            wp_localize_script('prpinta_' . $tool . '_js_' . basename(reset($js_files)), 'prpinta_ajax', [
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('prpinta_lead_nonce'),
+            ]);
+        }
     }
 }
-
-add_action('wp_enqueue_scripts', 'prpinta_calc_enqueue_scripts');
+add_action('wp_enqueue_scripts', 'prpinta_tools_enqueue_scripts');
 
 
 function handle_vue_leads() {
@@ -85,30 +93,23 @@ function sendLeadEmail($data)
 {
     try {
         // Sanitize the input data
-        $angle = sanitizeString($data['angle']) ;
-        $battery = sanitizeString($data['battery']);
-        $batteryPossibility = sanitizeString($data['batteryPossibility']);
-        $consumption = sanitizeString($data['consumption']);
-        $height = sanitizeString($data['height']);
-        $roof = sanitizeString($data['roof']);
-        $type = sanitizeString($data['type']);
-        $price = sanitizeString($data['price']);
-
-        $phone = sanitizeString($data['phone']);
+        $name = sanitizeString($data['name']);
         $email = sanitizeString($data['email']);
+        $phone = sanitizeString($data['phone']);
+        $city = sanitizeString($data['city']);
+        $address = sanitizeString($data['address']);
+        $service = sanitizeString($data['service']);
+        $message = sanitizeString($data['message']);
 
         // Generate the email template
         $message = getTemplateHTML([
-            'angle' => $angle,
-            'battery' => $battery,
-            'batteryPossibility' => $batteryPossibility,
-            'consumption' => $consumption,
-            'height' => $height,
-            'roof' => $roof,
-            'type' => $type,
-            'price' => $price,
+            'name' => $name,
+            'email' => $email,
             'phone' => $phone,
-            'email' => $email
+            'city' => $city,
+            'address' => $address,
+            'service' => $service,
+            'message' => $message,
         ]);
 
         // Check if the email template is generated
