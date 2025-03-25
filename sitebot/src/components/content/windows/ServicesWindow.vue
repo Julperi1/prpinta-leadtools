@@ -25,7 +25,7 @@ function open(link) {
 <template>
   <v-card @click="back" color="primary" variant="tonal">
     <v-card-text class="d-flex align-center pa-2">
-      <v-icon>mdi-arrow-left</v-icon>
+      <v-icon icon="$arrowLeft"></v-icon>
       <b>Takaisin</b>
     </v-card-text>
   </v-card>
@@ -33,25 +33,25 @@ function open(link) {
   <v-sheet>
     <v-card-title class="pl-2 mt-2">
       Maalauspalvelut
-      <v-icon>mdi-format-paint</v-icon>
+      <v-icon icon="$paint"></v-icon>
     </v-card-title>
 
     <v-card v-for="service in paintServices" @click="open(service.link)" class="mb-2 " flat color="primary">
       <v-card-text class="d-flex align-center justify-space-between pa-2">
         <b> {{ service.name }}</b>
-        <v-icon>mdi-arrow-right</v-icon>
+        <v-icon icon="$arrowRight"></v-icon>
       </v-card-text>
     </v-card>
 
     <v-card-title class="pb-0 pl-2">
       Kattoplavelut
-      <v-icon>mdi-home-roof</v-icon>
+      <v-icon icon="$roof"></v-icon>
     </v-card-title>
 
     <v-card v-for="service in roofingServices" @click="open(service.link)" class="mt-2" flat color="primary">
       <v-card-text class="d-flex align-center justify-space-between pa-2">
         <b> {{ service.name }}</b>
-        <v-icon>mdi-arrow-right</v-icon>
+        <v-icon icon="$arrowRight"></v-icon>
       </v-card-text>
     </v-card>
   </v-sheet>

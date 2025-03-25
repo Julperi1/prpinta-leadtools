@@ -86,7 +86,7 @@ function animateText(fullText, key, speed = 100, callback = null) {
       </v-card-title>
 
       <button class="mr-4" @click.stop="closeSmallandCloseNoti">
-        <v-icon>mdi-close</v-icon>
+        <v-icon icon="$close"></v-icon>
       </button>
     </v-sheet>
   </v-card>

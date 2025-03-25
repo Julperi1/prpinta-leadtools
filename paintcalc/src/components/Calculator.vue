@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, provide, inject } from 'vue';
+import { ref, computed, provide } from 'vue';
 import { useDisplay } from 'vuetify';
 import Squares from '@/components/pages/Squares.vue';
 import Contact from '@/components/pages/Contact.vue';
@@ -263,7 +263,7 @@ provide('computedPrice', computedPrice);
     <v-sheet class="bg-transparent lf-steps d-flex py-2 position-relative">
       <v-card icon v-for="step in 5" :key="step" style="z-index: 2" :class="stepMargin(step)" :color="stepColor(step)"
         flat class="pa-1">
-        <v-icon size="xx-large">{{ step == 5 ? 'mdi-check' : `mdi-numeric-${step}` }} </v-icon>
+        <v-icon size="xx-large" :icon="step == 5 ? '$check' : `$numeric${step}`"> </v-icon>
       </v-card>
 
       <v-divider class="position-absolute opacity-90" width="100%" thickness="5" :style="stepLineStyles"></v-divider>
@@ -284,21 +284,21 @@ provide('computedPrice', computedPrice);
   <v-sheet class="d-flex justify-center">
     <v-card v-if="currentStep == 4" @click="submit()" :loading="loading" rounded color="green" flat
       class="pa-1 px-4 text-button">
-      <v-icon class="mr-2">mdi-check</v-icon>
+      <v-icon class="mr-2" icon="$check"></v-icon>
       Katso hinta
     </v-card>
 
     <v-card v-else-if="currentStep !== 5" @click="tryNextStep()" rounded color="primary" flat
       class="pa-1 px-4 text-button">
       Seuraava
-      <v-icon>mdi-arrow-right</v-icon>
+      <v-icon icon="$arrowRight"></v-icon>
     </v-card>
   </v-sheet>
 
   <v-sheet class="mt-4 d-flex justify-center">
     <v-card v-if="currentStep !== 4" @click="reset()" rounded color="error" flat size="small" variant="text"
       class="text-button px-2">
-      <v-icon>mdi-refresh</v-icon>
+      <v-icon icon="$refresh"></v-icon>
       Aloita alusta
     </v-card>
   </v-sheet>

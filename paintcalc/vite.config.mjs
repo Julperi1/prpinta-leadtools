@@ -1,21 +1,18 @@
 // Plugins
-import Components from 'unplugin-vue-components/vite'
-import Vue from '@vitejs/plugin-vue'
-import Vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
-import ViteFonts from 'unplugin-fonts/vite'
+import Components from 'unplugin-vue-components/vite';
+import vue from '@vitejs/plugin-vue';
+import vuetify from 'vite-plugin-vuetify';
+import ViteFonts from 'unplugin-fonts/vite';
 
 // Utilities
-import { defineConfig } from 'vite'
-import { fileURLToPath, URL } from 'node:url'
+import { defineConfig } from 'vite';
+import { fileURLToPath, URL } from 'node:url';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    Vue({
-      template: { transformAssetUrls }
-    }),
-    // https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin#readme
-    Vuetify(),
+    vue(),
+    vuetify(),
     Components(),
     ViteFonts({
       google: {
@@ -51,4 +48,4 @@ export default defineConfig({
       },
     },
   },
-})
+});

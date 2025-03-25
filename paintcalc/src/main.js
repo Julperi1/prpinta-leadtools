@@ -5,7 +5,9 @@
  */
 
 // Plugins
-import { registerPlugins } from '@/plugins';
+// import { registerPlugins } from '@/plugins'
+import vuetify from '@/plugins/vuetify';
+import 'vuetify/styles';
 
 // Components
 import App from './App.vue';
@@ -14,7 +16,5 @@ import App from './App.vue';
 import { createApp } from 'vue';
 
 const app = createApp(App);
-
-registerPlugins(app);
-
-app.mount('#prpinta-calc');
+app.use(vuetify);
+app.mount('#app');

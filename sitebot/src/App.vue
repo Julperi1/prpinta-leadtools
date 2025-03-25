@@ -10,9 +10,5 @@ const mobile = computed(() => {
 provide('mobile', mobile.value);
 </script>
 <template>
-  <v-app>
-    <v-main>
-      <SiteBot />
-    </v-main>
-  </v-app>
+  <SiteBot />
 </template>

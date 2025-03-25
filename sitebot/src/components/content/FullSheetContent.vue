@@ -42,10 +42,10 @@ provide('back', back);
       <v-spacer></v-spacer>
 
       <button @click="reset" class="my-2">
-        <v-icon :color="view === 'menu' ? 'grey-lighten-2' : 'primary'">mdi-refresh</v-icon>
+        <v-icon :color="view === 'menu' ? 'grey-lighten-2' : 'primary'" icon="$refresh"></v-icon>
       </button>
       <button @click="closeFull" class="mx-2 my-2">
-        <v-icon color="primary">mdi-close</v-icon>
+        <v-icon color="primary" icon="$close"></v-icon>
       </button>
     </v-toolbar>
 
@@ -61,7 +61,7 @@ provide('back', back);
             <v-card @click="view = 'offer'" class="py-2" color="primary" flat>
               <v-card-title class="d-flex align-center justify-space-between">
                 Tarjouspyyntö
-                <v-icon>mdi-clipboard-outline</v-icon>
+                <v-icon icon="$clipboard"></v-icon>
               </v-card-title>
             </v-card>
 
@@ -69,7 +69,7 @@ provide('back', back);
             <v-card @click="view = 'contact'" class="py-2" color="primary" flat>
               <v-card-title class="d-flex align-center justify-space-between">
                 Yhteydenottopyyntö
-                <v-icon>mdi-account-box-outline</v-icon>
+                <v-icon icon="$accountBox"></v-icon>
               </v-card-title>
             </v-card>
 
@@ -77,7 +77,7 @@ provide('back', back);
             <v-card class="py-2" color="primary" flat>
               <v-card-title class="d-flex align-center justify-space-between">
                 Maalauksen hintalaskuriin
-                <v-icon>mdi-calculator</v-icon>
+                <v-icon icon="$calculator"></v-icon>
               </v-card-title>
             </v-card>
 
@@ -85,7 +85,7 @@ provide('back', back);
             <v-card @click="view = 'services'" class="py-2" color="primary" flat>
               <v-card-title class="d-flex align-center justify-space-between">
                 Palvelumme
-                <v-icon>mdi-format-list-checkbox </v-icon>
+                <v-icon icon="$formatList"></v-icon>
               </v-card-title>
             </v-card>
           </v-sheet>
