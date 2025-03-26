@@ -25,7 +25,7 @@ add_shortcode('prpinta_sitebot', 'prpinta_sitebot_shortcode');
  * Enqueue necessary CSS and JS files if the shortcode is present on the page.
  */
 function prpinta_tools_enqueue_scripts() {
-    $tools = ['calc', 'sitebot'];
+    $tools = ['paintcalc', 'sitebot'];
 
     foreach ($tools as $tool) {
         // Check if the current post or page contains the shortcode
