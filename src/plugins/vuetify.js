@@ -3,6 +3,16 @@ import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import { mdiNumeric1, mdiNumeric2, mdiNumeric3, mdiNumeric4, mdiNumeric5, mdiRefresh, mdiArrowRight, mdiCheck, mdiFormatListCheckbox, mdiCalculator, mdiAccountBoxOutline, mdiClipboardOutline, mdiArrowLeft, mdiFormatPaint, mdiHomeRoof, mdiClose } from '@mdi/js';
 
 const vuetify = createVuetify({
+  theme: {
+    defaultTheme: 'custom',
+    themes: {
+      custom: {
+        colors: {
+          primary: '#5a6cbe',
+        }
+      },
+    },
+  },
   icons: {
     defaultSet: 'mdi',
     aliases: {
