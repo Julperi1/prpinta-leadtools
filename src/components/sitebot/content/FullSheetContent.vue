@@ -1,9 +1,9 @@
 <script setup>
 import { inject, provide, ref } from 'vue';
 
-import ContactWindow from '@/components/content/windows/ContactWindow.vue';
-import ServicesWindow from '@/components/content/windows/ServicesWindow.vue';
-import OfferWindow from '@/components/content/windows/OfferWindow.vue';
+import ContactWindow from '@/components/sitebot/content/windows/ContactWindow.vue';
+import ServicesWindow from '@/components/sitebot/content/windows/ServicesWindow.vue';
+import OfferWindow from '@/components/sitebot/content/windows/OfferWindow.vue';
 
 const closeFull = inject('closeFull');
 const view = ref('menu');
@@ -49,7 +49,7 @@ provide('back', back);
       </button>
     </v-toolbar>
 
-    <v-divider></v-divider>
+    <v-sheet height="1" class="bg-grey-lighten-2"></v-sheet>
 
     <!-- Content -->
     <v-sheet class="pa-4 overflow-y-scroll" max-height="500">
@@ -76,7 +76,7 @@ provide('back', back);
             <!-- Open price calculator page-->
             <v-card class="py-2" color="primary" flat>
               <v-card-title class="d-flex align-center justify-space-between">
-                Maalauksen hintalaskuriin
+                Hintalaskuri
                 <v-icon icon="$calculator"></v-icon>
               </v-card-title>
             </v-card>

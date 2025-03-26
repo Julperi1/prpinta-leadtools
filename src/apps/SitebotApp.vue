@@ -1,6 +1,6 @@
 <script setup>
 import { computed, provide } from 'vue';
-import SiteBot from '@/components/SiteBot.vue';
+import SiteBot from '@/components/sitebot/SiteBot.vue';
 import { useDisplay } from 'vuetify';
 
 const mobile = computed(() => {

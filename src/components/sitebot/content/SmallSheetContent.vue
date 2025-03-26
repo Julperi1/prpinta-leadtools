@@ -60,7 +60,7 @@ function animateText(fullText, key, speed = 100, callback = null) {
   <v-card v-show="notification" @click="clickSmallAndCloseNoti" class="rounded-bs-0 position-absolute" elevation="0"
     style="bottom:70px;left:70px">
     <v-sheet class="d-flex align-center justify-space-between bg-primary rounded-be-lg rounded-te-lg rounded-ts-lg">
-      <v-card-title class="py-0 px-4 align-center justify-space-between" style="width: 270px;">
+      <v-card-title class="py-0 px-2 align-center justify-space-between text-body-1" style="width: 250px;">
         {{ notificationData.currentTitle ? notificationData.currentTitle : 'M' }}
         <v-card-subtitle class="px-0 pb-1 text-caption">
           {{ notificationData.currentSubtitle }}
@@ -78,10 +78,10 @@ function animateText(fullText, key, speed = 100, callback = null) {
 
     <v-sheet class="d-flex align-center justify-space-between" rounded>
       <v-card-title class="ml-16 py-0 pr-0 align-center justify-space-between">
-        Aloita klikkaamalla tästä!
+        Aloita klikkaamalla!
 
         <v-card-subtitle class="pl-0 pb-1 text-caption">
-          Yhteydenotot ja tietoja palveluistamme
+          Yhteydenotot ja lisätietoja
         </v-card-subtitle>
       </v-card-title>
 

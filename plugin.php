@@ -10,53 +10,69 @@
 // Make sure WordPress has loaded before executing the code.
 defined('ABSPATH') or die('No script kiddies please!');
 
-// Register the shortcode
-function prpinta_calc_shortcode() {
+/**
+ * --------------------------------------------------------------------------
+ * --------------------------------------------------------------------------
+ * Register the shortcode for the calculator app and the sitebot app
+ * --------------------------------------------------------------------------
+ * --------------------------------------------------------------------------
+ */
+function prpinta_paintcalc_shortcode() {
     return '<div id="paintcalc-app"></div>';
 }
-add_shortcode('prpinta_calc', 'prpinta_calc_shortcode');
+add_shortcode('paintcalc-app', 'prpinta_paintcalc_shortcode');
 
 function prpinta_sitebot_shortcode() {
     return '<div id="sitebot-app"></div>';
 }
-add_shortcode('prpinta_sitebot', 'prpinta_sitebot_shortcode');
+add_shortcode('sitebot-app', 'prpinta_sitebot_shortcode');
+
+
 
 /**
- * Enqueue necessary CSS and JS files if the shortcode is present on the page.
+ * --------------------------------------------------------------------------
+ * --------------------------------------------------------------------------
+ * Enqueue necessary CSS and JS files if the shortcode is present on the page
+ * --------------------------------------------------------------------------
+ * --------------------------------------------------------------------------
  */
-function prpinta_tools_enqueue_scripts() {
-    $tools = ['paintcalc', 'sitebot'];
+function prpinta_enqueue_scripts() {
+    // Check if the current post or page contains the shortcode
+    if (is_singular()) {
+        $plugin_dir = plugin_dir_path(__FILE__);
 
-    foreach ($tools as $tool) {
-        // Check if the current post or page contains the shortcode
-        if (is_singular() && has_shortcode(get_post()->post_content, 'prpinta_' . $tool)) {
-            $plugin_dir = plugin_dir_path(__FILE__); // Get the plugin directory path
-            $js_files = glob($plugin_dir . '*.js'); // Get all .js files in the plugin folder
-            $css_files = glob($plugin_dir . '*.css'); // Get all .css files in the plugin folder
-
-            // Enqueue JS files
-            foreach ($js_files as $js_file) {
-                $js_url = plugin_dir_url(__FILE__) . basename($js_file); // Get the file URL
-                wp_enqueue_script('prpinta_' . $tool . '_js_' . basename($js_file), $js_url, array(), null, true); // Enqueue JS files
-            }
-
-            // Enqueue CSS files
-            foreach ($css_files as $css_file) {
-                $css_url = plugin_dir_url(__FILE__) . basename($css_file); // Get the file URL
-                wp_enqueue_style('prpinta_' . $tool . '_css_' . basename($css_file), $css_url); // Enqueue CSS files
-            }
-
-            wp_localize_script('prpinta_' . $tool . '_js_' . basename(reset($js_files)), 'prpinta_ajax', [
-                'ajax_url' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('prpinta_lead_nonce'),
-            ]);
+        $js_files = glob($plugin_dir . '*.js'); // Get all .js files in the plugin folder
+        $css_files = glob($plugin_dir . '*.css'); // Get all .css files in the plugin folder
+        
+        // Enqueue JS files
+        foreach ($js_files as $js_file) {
+            $js_url = plugin_dir_url(__FILE__) . basename($js_file);
+            wp_enqueue_script('prpinta_js_' . basename($js_file), $js_url, array(), null, true); // Enqueue JS files
         }
+
+        // Enqueue CSS files
+        foreach ($css_files as $css_file) {
+            $css_url = plugin_dir_url(__FILE__) . basename($css_file);
+            wp_enqueue_style('prpinta_css_' . basename($css_file), $css_url); // Enqueue CSS files
+        }
+
+        wp_localize_script('prpinta_js_' . basename(reset($js_files)), 'prpinta_ajax', [
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('prpinta_lead_nonce'),
+        ]);
     }
 }
-add_action('wp_enqueue_scripts', 'prpinta_tools_enqueue_scripts');
+add_action('wp_enqueue_scripts', 'prpinta_enqueue_scripts');
 
 
-function handle_vue_leads() {
+/**
+ * --------------------------------------------------------------------------
+ * --------------------------------------------------------------------------
+ * Enqueue necessary CSS and JS files if the shortcode is present on the page
+ * --------------------------------------------------------------------------
+ * --------------------------------------------------------------------------
+ */
+function handle_tools_leads() {
     // Verify the nonce
     if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'prpinta_lead_nonce')) {
         wp_send_json_error(['message' => 'Invalid nonce'], 403);
@@ -79,8 +95,8 @@ function handle_vue_leads() {
     }
 }
 
-add_action('wp_ajax_handle_vue_leads', 'handle_vue_leads');
-add_action('wp_ajax_nopriv_handle_vue_leads', 'handle_vue_leads');
+add_action('wp_ajax_handle_tools_leads', 'handle_tools_leads');
+add_action('wp_ajax_nopriv_handle_tools_leads', 'handle_tools_leads');
 
 /**
  * Send an email with the lead data
@@ -188,122 +204,7 @@ function getTemplateHTML($data): ?string
 ?>
         <!DOCTYPE html>
         <html>
-
-        <head>
-            <title>Tietoa kohteesta</title>
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    line-height: 1.6;
-                    color: #333333;
-                    background-color: #f9f9f9;
-                    margin: 0;
-                    padding: 0;
-                }
-
-                .container {
-                    max-width: 600px;
-                    margin: 20px auto;
-                    background: #ffffff;
-                    padding: 20px;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                }
-
-                .header {
-                    text-align: center;
-                    background-color: #0063DB;
-                    color: white;
-                    padding: 10px;
-                    border-radius: 8px;
-                }
-
-                .content {
-                    width: 600px;
-                    text-align: center;
-                    margin: 20px 0;
-                }
-
-                .footer {
-                    text-align: center;
-                    font-size: 12px;
-                    color: #666666;
-                    margin-top: 20px;
-                }
-
-                .lf-img {
-                    border-radius: 8px;
-                    height: 40px;
-                    margin-left: 40px;
-                }
-
-                h2 {
-                    font-size: 20px;
-                    text-align: center;
-                }
-            </style>
-        </head>
-
-        <body>
-            <div class="container">
-                <div class="header">
-
-                    <h1 style="padding-left:20px">Uusi laskuriliidi on saapunut!</h1>
-                </div>
-                <div class="content">
-                    <p>Hei, uusi liidi saapui verkkosivujen laskurista.</p>
-
-                    <h2>Asiakkaan tiedot laskurista:</h2>
-                    <div style="display:flex;justify-content:center;align-items:center">
-                        <div style="display:flex;justify-content:space-between">
-                            <div>
-                            <strong>Sähköpostiosoite:</strong>
-                            <br>
-                            <?php echo $email; ?>
-                            <br>
-                            <strong>Puhelinnumero:</strong>
-                            <br>
-                            <?php echo $phone; ?>
-                            <br>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h2>Kohteen tiedot laskurista:</h2>
-                    <div style="display:flex;justify-content:center;align-items:center">
-                        <div style="display:flex;justify-content:space-between;width:200px">
-                            <div>
-                                <strong>Tyyppi:</strong><br>
-                                <strong>Kattotyyppi:</strong><br>
-                                <?php if ($roof !== 'Tasakatto') echo '<strong>Katon kulma:</strong><br>'; ?>
-                                <strong>Räystäskorkeus:</strong><br>
-                                <strong>Sähkön kulutus:</strong><br>
-                                <strong>Akusto:</strong><br>
-                                <?php if ($battery !== 'Kyllä') echo '<strong>Akustovalmius:</strong><br>'; ?>
-                            </div>
-                            <div style="text-align:end">
-                                <?php echo $type; ?><br>
-                                <?php echo $roof; ?><br>
-                                <?php if ($roof !== 'Tasakatto') echo $angle; ?><br>
-                                <?php echo $height; ?><br>
-                                <?php echo $consumption; ?><br>
-                                <?php echo $battery; ?><br>
-                                <?php if ($battery !== 'Kyllä') echo $batteryPossibility; ?><br>
-                            </div>
-                        </div>
-                    </div>
-
-                    <br>
-                    <p style="text-align:center">
-                        <b>HUOM! Tämä on automaattisähköposti, älä vastaa tähän.</b>
-                    </p>
-                </div>
-                <div class="footer">
-                    <img class="lf-img" src="https://www.leadifix.fi/wp-content/uploads/2023/08/leqadier.png">
-                </div>
-            </div>
-        </body>
-
+        <!-- Email template for the lead data -->
         </html>
 
 <?php
@@ -323,8 +224,8 @@ function getTemplateHTML($data): ?string
 function sendErrorEmail($errorMessage)
 {
     $recipient = 'julius.paananen@leadifx.fi';
-    $subject = "LeadiFix - Error in Prpinta Calculator Plugin";
-    $fromEmail = 'noreply@prpinta.fi';
+    $subject = "LeadiFix - Error in Prpinta Tools Plugin";
+    $fromEmail = 'noreply@prpintakasittely.fi';
     $headers = [
         'From' => $fromEmail,
         'Reply-To' => $fromEmail,

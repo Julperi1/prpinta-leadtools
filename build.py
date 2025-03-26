@@ -1,19 +1,20 @@
 import subprocess
 import shutil
 import os
+import zipfile
 
-def build_and_copy(project):
+def build_and_copy():
     # Run the npm build command in the specified project directory.
     try:
-        subprocess.check_call(["npm", "run", "build"], cwd=project)
-        print(f"npm build for {project} completed successfully.")
+        subprocess.check_call(["npm", "run", "build"])
+        print(f"npm build completed successfully.")
     except subprocess.CalledProcessError as e:
-        print(f"Error during npm build for {project}: {e}")
+        print(f"Error during npm build {e}")
         return
 
     # Define the source and destination directories.
-    source_dir = os.path.join(project, "dist", "assets")
-    dest_dir = os.path.join("build", project)
+    source_dir = os.path.join("dist", "assets")
+    dest_dir = os.path.join("build")
 
     if not os.path.exists(source_dir):
         print(f"Source directory {source_dir} does not exist.")
@@ -34,6 +35,9 @@ def build_and_copy(project):
 
     print(f"Files copied successfully from {source_dir} to {dest_dir}")
 
+
+
+
 def copy_plugin():
     # Define source and destination for plugin.php.
     src = "plugin.php"
@@ -50,10 +54,41 @@ def copy_plugin():
     shutil.copy2(src, dst)
     print(f"{src} copied successfully to {dst}")
 
+
+
+
+def zip_build_contents(build_dir="./build", zip_name="leadtools.zip"):
+    # Full path to the zip file (placed inside build_dir)
+    zip_path = os.path.join(build_dir, zip_name)
+    
+    # Create a new zip file in write mode
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        # Walk through all files and subdirectories in build_dir
+        for root, dirs, files in os.walk(build_dir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                # Skip the zip file itself if it exists in the build folder
+                if os.path.abspath(file_path) == os.path.abspath(zip_path):
+                    continue
+                # Compute the archive name relative to build_dir
+                arcname = os.path.relpath(file_path, build_dir)
+                zipf.write(file_path, arcname)
+                
+    print(f"Created zip archive: {zip_path}")
+
+
+
+
 if __name__ == "__main__":
+    if os.path.exists("build"):
+        shutil.rmtree("build")
+        print("Deleted existing build directory.")
+
     # Build and copy assets for both projects.
-    build_and_copy("sitebot")
-    build_and_copy("paintcalc")
+    build_and_copy()
     
     # Finally, copy plugin.php to ./build.
     copy_plugin()
+
+    # Zip the contents of the build directory.
+    zip_build_contents()

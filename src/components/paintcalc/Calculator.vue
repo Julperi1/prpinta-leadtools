@@ -1,11 +1,11 @@
 <script setup>
 import { ref, computed, provide } from 'vue';
 import { useDisplay } from 'vuetify';
-import Squares from '@/components/pages/Squares.vue';
-import Contact from '@/components/pages/Contact.vue';
-import Floors from '@/components/pages/Floors.vue';
-import Walls from '@/components/pages/Walls.vue';
-import Result from './pages/Result.vue';
+import Squares from '@/components/paintcalc/pages/Squares.vue';
+import Contact from '@/components/paintcalc/pages/Contact.vue';
+import Floors from '@/components/paintcalc/pages/Floors.vue';
+import Walls from '@/components/paintcalc/pages/Walls.vue';
+import Result from '@/components/paintcalc/pages/Result.vue';
 
 const step1Component = ref(null);
 const step2Component = ref(null);
@@ -303,5 +303,5 @@ provide('computedPrice', computedPrice);
     </v-card>
   </v-sheet>
 
-  <v-divider class="mt-4"></v-divider>
+  <v-sheet height="1" class="bg-grey-lighten-2 mt-4"></v-sheet>
 </template>
