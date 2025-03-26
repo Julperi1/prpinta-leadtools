@@ -30,33 +30,6 @@ function clickMinimized() {
   full.value = true;
 }
 
-
-// Transparent Drag Image and startY
-const transparentImage = ref(null);
-const startY = ref(0);
-
-/**
- * Initialize the transparent image
- * @param event
- */
-function handleDragStart(event) {
-  event.dataTransfer.setDragImage(transparentImage.value, 0, 0);
-  startY.value = event.clientY;
-}
-
-/**
- * Handle the drag end event
- * @param event
- */
-function handleDragEnd(event) {
-  const endY = event.clientY;
-  if (endY < startY.value) {
-    clickMinimized();
-  } else {
-    console.log('Item was dragged downwards');
-  }
-}
-
 provide('clickSmall', clickSmall);
 provide('closeFull', closeFull);
 provide('closeSmall', closeSmall);
@@ -64,8 +37,7 @@ provide('closeSmall', closeSmall);
 
 <template>
   <!-- Bottom Sheets -->
-  <BottomSheet v-model="minimized" @click="clickMinimized" draggable="true" @dragstart="handleDragStart"
-    @dragend="handleDragEnd">
+  <BottomSheet v-model="minimized" @click="clickMinimized" draggable="true">
     <v-card class="rounded-t-lg cursor-grab">
       <v-sheet rounded height="7" class="mt-2 mx-3 mb-4 bg-grey-lighten-2"></v-sheet>
     </v-card>
@@ -80,9 +52,6 @@ provide('closeSmall', closeSmall);
   <BottomSheet v-model="full">
     <FullSheetContent />
   </BottomSheet>
-
-  <!-- Transparent Drag Image -->
-  <div ref="transparentImage" class="transparent-image"></div>
 </template>
 
 <style>
