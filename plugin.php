@@ -12,12 +12,12 @@ defined('ABSPATH') or die('No script kiddies please!');
 
 // Register the shortcode
 function prpinta_calc_shortcode() {
-    return '<div id="prpinta-calc"></div>';
+    return '<div id="paintcalc-app"></div>';
 }
 add_shortcode('prpinta_calc', 'prpinta_calc_shortcode');
 
 function prpinta_sitebot_shortcode() {
-    return '<div id="prpinta-sitebot"></div>';
+    return '<div id="sitebot-app"></div>';
 }
 add_shortcode('prpinta_sitebot', 'prpinta_sitebot_shortcode');
 

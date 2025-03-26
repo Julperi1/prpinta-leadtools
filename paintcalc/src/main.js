@@ -17,4 +17,4 @@ import { createApp } from 'vue';
 
 const app = createApp(App);
 app.use(vuetify);
-app.mount('#app');
+app.mount('#paintcalc-app');
