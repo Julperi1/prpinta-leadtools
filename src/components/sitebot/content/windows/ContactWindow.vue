@@ -39,24 +39,26 @@ defineExpose({
 <template>
   <v-sheet class="mt-2 pb-2">
     <v-text-field v-model="data.name" label="Nimi / Yritys *" density="compact" variant="solo-filled" flat
-      :error-messages="error === 'name' ? ['Anna oikea arvo'] : []" @update:modelValue="validate('name')">
+      :error-messages="error === 'name' ? ['Anna oikea arvo'] : []" @update:modelValue="validate('name')"
+      id="prpinta-contact-name">
     </v-text-field>
 
     <v-text-field v-model="data.email" label="Sähköpostiosoite *" type="email" density="compact" variant="solo-filled"
-      flat :error-messages="error === 'email' ? ['Anna oikea sähköpostiosoite'] : []"
+      flat :error-messages="error === 'email' ? ['Anna oikea sähköpostiosoite'] : []" id="prpinta-contact-email"
       @update:modelValue="validate('email')">
     </v-text-field>
 
     <v-text-field v-model="data.phone" label="Puhelinnumero *" density="compact" variant="solo-filled" flat
-      :error-messages="error === 'phone' ? ['Anna oikea puhelnnumero'] : []" @update:modelValue="validate('phone')">
+      :error-messages="error === 'phone' ? ['Anna oikea puhelnnumero'] : []" @update:modelValue="validate('phone')"
+      id="prpinta-contact-phone">
     </v-text-field>
 
     <v-text-field v-model="data.city" label="Kaupunki *" density="compact" variant="solo-filled" flat
-      :error-messages="error === 'city' ? ['Anna oikea puhelnnumero'] : []" rows="4">
+      :error-messages="error === 'city' ? ['Anna oikea puhelnnumero'] : []" rows="4" id="prpinta-contact-city">
     </v-text-field>
 
     <v-textarea v-model="data.message" auto-grow label="Mitä pyyntösi koskee?" density="compact" variant="solo-filled"
-      flat rows="4">
+      flat rows="4" id="prpinta-contact-message">
     </v-textarea>
 
     <v-btn @click="submit" color="primary" block flat>Lähetä</v-btn>
