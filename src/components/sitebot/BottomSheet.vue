@@ -11,8 +11,7 @@ const width = computed(() => {
 </script>
 
 <template>
-  <v-bottom-sheet v-model="model" eager :continuous="false" :scrim="false" :width="width" persistent no-click-animation
-    class="mx-2">
+  <v-bottom-sheet v-model="model" eager :scrim="false" :width="width" persistent no-click-animation class="mx-2">
     <slot></slot>
   </v-bottom-sheet>
 </template>

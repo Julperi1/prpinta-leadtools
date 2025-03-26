@@ -13,7 +13,7 @@ defineExpose({ error, data });
       <v-sheet>
         <v-text-field v-model="data.squares" label="Neliöt" width="250" persistent-hint hint="Alimman kerroksen neliöt"
           :error-messages="error ? ['Anna oikea arvo'] : []" density="comfortable" type="number" hide-spin-buttons
-          variant="solo-filled" flat>
+          variant="solo-filled" flat id="prpinta-squares">
           <template v-slot:append-inner>
             m²
           </template>

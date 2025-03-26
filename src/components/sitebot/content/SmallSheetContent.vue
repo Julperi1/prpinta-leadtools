@@ -76,7 +76,7 @@ function animateText(fullText, key, speed = 100, callback = null) {
         image="https://prpintakasittely.fi/wp-content/uploads/2023/07/eeee-1024x1024.jpg"></v-avatar>
     </v-sheet>
 
-    <v-sheet class="d-flex align-center justify-space-between" rounded>
+    <div class="d-flex align-center justify-space-between" rounded>
       <v-card-title class="ml-16 py-0 pr-0 align-center justify-space-between">
         Aloita klikkaamalla!
 
@@ -85,9 +85,9 @@ function animateText(fullText, key, speed = 100, callback = null) {
         </v-card-subtitle>
       </v-card-title>
 
-      <button class="mr-4" @click.stop="closeSmallandCloseNoti">
+      <v-sheet class="mr-4" @click.stop="closeSmallandCloseNoti">
         <v-icon icon="$close"></v-icon>
-      </button>
-    </v-sheet>
+      </v-sheet>
+    </div>
   </v-card>
 </template>

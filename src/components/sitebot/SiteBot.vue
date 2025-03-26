@@ -37,7 +37,7 @@ provide('closeSmall', closeSmall);
 
 <template>
   <!-- Bottom Sheets -->
-  <BottomSheet v-model="minimized" @click="clickMinimized" draggable="true">
+  <BottomSheet v-model="minimized" @click="clickMinimized">
     <v-card class="rounded-t-lg cursor-grab">
       <v-sheet rounded height="7" class="mt-2 mx-3 mb-4 bg-grey-lighten-2"></v-sheet>
     </v-card>
