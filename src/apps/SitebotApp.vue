@@ -8,7 +8,7 @@ const mobile = computed(() => {
 });
 
 async function submitForm(payloadData, source) {
-  const payload = JSON.stringify({
+  const payload = {
     name: payloadData?.name || null,
     email: payloadData?.email || null,
     phone: payloadData?.phone || null,
@@ -17,16 +17,14 @@ async function submitForm(payloadData, source) {
     message: payloadData?.message || null,
     service: payloadData?.service || null,
     source: source,
-  });
+  };
 
   // Append any additional fields from the payloadData
-  if (payloadData.additionals && Array.isArray(payloadData.additionals)) {
+  if (payloadData?.additionals && Array.isArray(payloadData.additionals)) {
     payloadData.additionals.forEach((item) => {
-      data[item.name] = item.value;
+      payload[item.name] = item.value;
     });
   }
-
-  formData.append('payload', JSON.stringify(data));
 
   try {
     const response = await fetch(solarvoima_ajax.ajax_url, {
@@ -37,7 +35,7 @@ async function submitForm(payloadData, source) {
       body: new URLSearchParams({
         action: 'handle_vue_leads',
         security: solarvoima_ajax.nonce,
-        payload,
+        payload: JSON.stringify(payload),
       }),
     });
 
