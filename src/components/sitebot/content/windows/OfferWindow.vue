@@ -1,8 +1,7 @@
 <script setup>
 import { ref, inject } from 'vue';
 
-const url = import.meta.env.VITE_WEBSITE_URL;
-
+const submitForm = inject('submitForm');
 const services = ref([
   'Ulkomaalaus', 'Sisämaalaus',
   'Sokkelin maalaus', 'Terassin käsittely',
@@ -10,6 +9,7 @@ const services = ref([
   'Peltikaton maalaus', 'Muu (kirjoita viestiin)',
 ]);
 
+const submitted = ref(false);
 const error = ref(null);
 const data = ref({
   name: null,
@@ -21,13 +21,25 @@ const data = ref({
   message: null,
 });
 
-function submit() {
-  console.log('Data:', data.value);
+async function submit() {
+  try {
+    const fields = ['name', 'email', 'phone', 'city', 'address', 'service'];
+    for (const key of fields) if (!validate(key)) return;
+
+    console.log(data.value);
+    const response = await submitForm(data.value, 'Sivubotti - tarjouspyyntö');
+    if (response) {
+      submitted.value = true;
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 function validate(key) {
   if (!data.value[key]) {
     error.value = key;
+    console.log('error', key);
     return false;
   } else {
     error.value = null;

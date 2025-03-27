@@ -16,6 +16,10 @@ function back() {
   view.value = 'menu';
 }
 
+function redirectToCalc() {
+  window.location.href = '/hintalaskuri';
+}
+
 function reset() {
   offerWindow.value.reset();
   contactWindow.value.reset();
@@ -53,7 +57,7 @@ provide('back', back);
 
     <!-- Content -->
     <v-sheet class="pa-4 overflow-y-scroll" max-height="500">
-      <v-window v-model="view" direction="vertical">
+      <v-window v-model="view" direction="vertical" disabled>
         <v-window-item value="menu" eager>
           <v-sheet class="d-flex flex-column ga-2">
 
@@ -74,7 +78,7 @@ provide('back', back);
             </v-card>
 
             <!-- Open price calculator page-->
-            <v-card class="py-2" color="primary" flat>
+            <v-card @click="redirectToCalc" class="py-2" color="primary" flat>
               <v-card-title class="d-flex align-center justify-space-between">
                 Hintalaskuri
                 <v-icon icon="$calculator"></v-icon>
