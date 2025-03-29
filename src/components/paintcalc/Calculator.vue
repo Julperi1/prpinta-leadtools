@@ -177,13 +177,6 @@ async function submit() {
     // Reset the error
     step4Component.value.error = null;
 
-    /**
-     *
-     *
-     *
-     *
-     */
-
     // Set the loading state
     loading.value = true;
 

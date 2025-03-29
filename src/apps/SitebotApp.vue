@@ -27,14 +27,14 @@ async function submitForm(payloadData, source) {
   }
 
   try {
-    const response = await fetch(solarvoima_ajax.ajax_url, {
+    const response = await fetch(prpinta_ajax.ajax_url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
         action: 'handle_vue_leads',
-        security: solarvoima_ajax.nonce,
+        security: prpinta_ajax.nonce,
         payload: JSON.stringify(payload),
       }),
     });

@@ -142,7 +142,7 @@ function sendLeadEmail($data)
         // Set the recipient email address
         //$to = 'asiakaspalvelu@prpinta.fi, jaakko.rantanilkku@prpinta.fi, myynti@leadifix.fi';
         $to = 'myynti@leadifix.fi';
-        $subject = "LeadiFix - uusi laskuriliidi!";
+        $subject = "LeadiFix - uusi liidi!";
 
         $response = wp_mail($to, $subject, $message, $headers);
         if ($response) {
@@ -188,23 +188,30 @@ function sanitizeString($input) {
 function getTemplateHTML($data): ?string
 {
     try {
-        $angle = $data['angle'] . '°';
-        $battery = ($data['battery'] === 'yes') ? 'Kyllä' : 'Ei';
-        $batteryPossibility = ($data['batteryPossibility'] === 'yes') ? 'Kyllä' : 'Ei';
-        $consumption = $data['consumption'];
-        $height = ($data['height'] === 'over3') ? 'Yli 3m' : 'Alle 3m';
-        $roof = ($data['roof'] === 'angled') ? 'Harjakatto' : 'Tasakatto';
-        $type = ($data['type'] === '"house"') ? 'Omakotitalo' : 'Mökki (sähköverkossa)';
-        $price = $data['price'] . '€';
-
-        $phone = $data['phone'];
-        $email = $data['email'];
+        $name = $data['name'] ?? 'N/A';
+        $email = $data['email'] ?? 'N/A';
+        $phone = $data['phone'] ?? 'N/A';
+        $city = $data['city'] ?? 'N/A';
+        $address = $data['address'] ?? 'N/A';
+        $service = $data['service'] ?? 'N/A';
+        $message = $data['message'] ?? 'N/A';
 
         ob_start();
 ?>
         <!DOCTYPE html>
         <html>
         <!-- Email template for the lead data -->
+         <body>
+            <h2>Uusi laskuriliidi!</h2>
+            <p><strong>Nimi:</strong> <?= $name ?></p>
+            <p><strong>Sähköposti:</strong> <?= $email ?></p>
+            <p><strong>Puhelin:</strong> <?= $phone ?></p>
+            <p><strong>Kaupunki:</strong> <?= $city ?></p>
+            <p><strong>Osoite:</strong> <?= $address ?></p>
+            <p><strong>Pintakäsittely:</strong> <?= $service ?></p>
+            <p><strong>Viesti:</strong></p>
+            <p><?= nl2br($message) ?></p>
+         </body>
         </html>
 
 <?php
