@@ -57,8 +57,8 @@ function animateText(fullText, key, speed = 100, callback = null) {
 
 <template>
   <!-- Notification card -->
-  <v-card v-show="notification" @click="clickSmallAndCloseNoti" class="rounded-bs-0 position-absolute" elevation="0"
-    style="bottom:70px;left:70px">
+  <v-card v-show="notification" @click="clickSmallAndCloseNoti" class="rounded-bs-0 position-absolute bg-transparent"
+    elevation="0" style="bottom:70px;left:70px">
     <v-sheet class="d-flex align-center justify-space-between bg-primary rounded-be-lg rounded-te-lg rounded-ts-lg">
       <v-card-title class="py-0 px-2 align-center justify-space-between text-body-1" style="width: 250px;">
         {{ notificationData.currentTitle ? notificationData.currentTitle : 'M' }}

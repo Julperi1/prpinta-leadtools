@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: PR-Pintakäsittely PPC
- * Description: Paintjob Price Calculator for PR-Pintakäsittely Oy
+ * Plugin Name: PR-Pintakäsittely Custom LTP
+ * Description: Collection of tools for PR-Pintakäsittely Oy
  * Author: LeadiFix
  * Version: 1.0
  * Author URI: https://www.leadifix.fi
@@ -219,6 +219,8 @@ function getTemplateHTML($data): ?string
                 <li><strong>Viesti:</strong> <?= nl2br($message) ?></li>
             </ul>
             </strong></p>
+            <br>
+            <i> Tämä on automaattisesti luotu sähköposti. Älä vastaa tähän viestiin.</i>
          </body>
         </html>
 
