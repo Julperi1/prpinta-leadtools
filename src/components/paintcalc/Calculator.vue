@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, provide } from 'vue';
+import { ref, computed, provide, inject } from 'vue';
 import { useDisplay } from 'vuetify';
 import Squares from '@/components/paintcalc/pages/Squares.vue';
 import Contact from '@/components/paintcalc/pages/Contact.vue';
@@ -7,12 +7,14 @@ import Floors from '@/components/paintcalc/pages/Floors.vue';
 import Walls from '@/components/paintcalc/pages/Walls.vue';
 import Result from '@/components/paintcalc/pages/Result.vue';
 
+const submitForm = inject('submitForm');
 const step1Component = ref(null);
 const step2Component = ref(null);
 const step3Component = ref(null);
 const step4Component = ref(null);
 const currentStep = ref(1);
 const loading = ref(false);
+const submitted = ref(false);
 
 const mobile = computed(() => {
   return useDisplay().smAndDown;
@@ -155,6 +157,9 @@ function tryNextStep() {
  */
 async function submit() {
   try {
+    // Set the loading state
+    loading.value = true;
+
     // Validate the name
     if (!step4Component.value?.data.name || step4Component.value?.data.name?.length < 2) {
       step4Component.value.error = 'name';
@@ -177,37 +182,24 @@ async function submit() {
     // Reset the error
     step4Component.value.error = null;
 
-    // Set the loading state
-    loading.value = true;
-
     // Prepare the payload
-    const payload = JSON.stringify({
-      squares: step1Component.value?.data.squares,
-      floors: step2Component.value?.data.floors,
-      walls: step3Component.value?.data.walls,
+    const payload = {
       name: step4Component.value?.data.name,
       email: step4Component.value?.data.email,
       phone: step4Component.value?.data.phone,
-      price: `
-        ${computedPrice.value ? parseInt(computedPrice.value * 0.8) : 'virhe'}€ -
-        ${computedPrice.value ? parseInt(computedPrice.value * 1.2) : 'virhe'}€
-      `,
-    });
+      additionals: [
+        { name: 'Pohjaneliöt', value: step1Component.value?.data.squares },
+        { name: 'Kerroksien määrä', value: step2Component.value?.data.floors },
+        { name: 'Huonokuntoisten seinien määrä', value: step3Component.value?.data.walls },
+        { name: 'Laskurissa laskettu hinta', value: `${computedPrice.value ? parseInt(computedPrice.value * 0.8) : 'virhe'}€ - ${computedPrice.value ? parseInt(computedPrice.value * 1.2) : 'virhe'}€` },
+      ],
+    };
 
-    // Send the data to the backend
-    // const response = await fetch(prpinta_ajax.ajax_url, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/x-www-form-urlencoded',
-    //   },
-    //   body: new URLSearchParams({
-    //     action: 'handle_vue_leads',
-    //     security: prpinta_ajax.nonce,
-    //     payload,
-    //   }),
-    // });
+    const response = await submitForm(payload, 'Maalauslaskuri');
+    if (response) {
+      submitted.value = true;
+    }
 
-    const response = true;
     // Handle the response
     if (response) {
       console.log('Success');
@@ -275,8 +267,8 @@ provide('computedPrice', computedPrice);
 
 
   <v-sheet class="d-flex justify-center">
-    <v-card v-if="currentStep == 4" @click="submit()" :loading="loading" rounded color="green" flat
-      class="pa-1 px-4 text-button">
+    <v-card v-if="currentStep == 4" @click="submit()" :loading="loading" rounded
+      :color="loading ? 'grey-darken-2' : 'green'" flat class="pa-1 px-4 text-button">
       <v-icon class="mr-2" icon="$check"></v-icon>
       Katso hinta
     </v-card>

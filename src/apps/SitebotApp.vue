@@ -14,15 +14,18 @@ async function submitForm(payloadData, source) {
     phone: payloadData?.phone || null,
     city: payloadData?.city || null,
     address: payloadData?.address || null,
-    message: payloadData?.message || null,
+    message: payloadData?.message || '',
     service: payloadData?.service || null,
     source: source,
   };
 
   // Append any additional fields from the payloadData
   if (payloadData?.additionals) {
+    // Add additional fields to the message
+    payload.message += '\n\nLisätietoja:\n';
     payloadData.additionals?.forEach((item) => {
-      payload[item?.name] = item?.value;
+      // Add as new row to message
+      payload.message += `${item.name}: ${item.value}\n`;
     });
   }
 

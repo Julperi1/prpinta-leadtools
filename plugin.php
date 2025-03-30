@@ -89,10 +89,10 @@ function handle_vue_leads() {
     $result = sendLeadEmail($payload);
 
     if ($result['success']) {
-        wp_send_json_success(['message' => 'Lead processed successfully!']);
+        wp_send_json_success(['message' =>  'Lead processed successfully!']);
     } else {
         sendErrorEmail("Failed to send email");
-        wp_send_json_error(['message' => 'Failed to process lead'], 500);
+        wp_send_json_error(['message' => $result['error'] ?? 'Failed to send email'], 500);
     }
 }
 
@@ -110,55 +110,55 @@ function sendLeadEmail($data)
 {
     try {
         // Sanitize the input data
-        $name = sanitizeString($data['name']);
-        $email = sanitizeString($data['email']);
-        $phone = sanitizeString($data['phone']);
-        $city = sanitizeString($data['city']);
-        $address = sanitizeString($data['address']);
-        $service = sanitizeString($data['service']);
-        $message = sanitizeString($data['message']);
+        $name = sanitizeString($data['name']) ?? '-';
+        $email = sanitizeString($data['email']) ?? '-';
+        $phone = sanitizeString($data['phone']) ?? '-';
+        $city = sanitizeString($data['city']) ?? '-';
+        $address = sanitizeString($data['address']) ?? '-';
+        $service = sanitizeString($data['service']) ?? '-';
+        $msg = sanitizeString($data['message']) ?? '-';
 
         $source = sanitizeString($data['source'] ?? '-');
 
         // Generate the email template
-        $message = getTemplateHTML([
+        $htmlmessage = getTemplateHTML([
             'name' => $name,
             'email' => $email,
             'phone' => $phone,
             'city' => $city,
             'address' => $address,
             'service' => $service,
-            'message' => $message,
+            'message' => $msg,
             'source' => $source,
         ]);
 
         // Check if the email template is generated
-        if (!$message) {
+        if (!$htmlmessage) {
             sendErrorEmail("Error in generating email template.");
             return ["success" => false];
         }
 
         // Set the email headers
-        $headers = "From: LeadiFix tools leadifixtools@prpintakasittely.fi" . "\r\n";
-        $headers .= "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-Type: text/html; charset=UTF-8" . "\r\n";
+        $headers = [
+            'From: LeadiTools <leadifixtools@prpintakasittely.fi>',
+            'Content-Type: text/html; charset=UTF-8'
+        ];
 
         // Set the recipient email address
-        //$to = 'asiakaspalvelu@prpinta.fi, jaakko.rantanilkku@prpinta.fi, myynti@leadifix.fi';
         $to = 'myynti@leadifix.fi';
         $subject = "LeadiFix - uusi liidi!";
 
-        $response = wp_mail($to, $subject, $message, $headers);
+        $response = wp_mail($to, $subject, $htmlmessage, $headers);
         if ($response) {
             return ["success" => true];
         } else {
-            sendErrorEmail("Email sending failed." . $to . '<br><br>' . $subject . '<br><br>' . $message . '<br><br>' . $headers);
+            sendErrorEmail("Email sending failed." . $to . '<br><br>' . $subject . '<br><br>' . $htmlmessage . '<br><br>' . $headers);
             return ["success" => false];
         }
     } catch (Exception $error) {
         error_log($error);
         sendErrorEmail($error);
-        return ["success" => false];
+        return ["success" => false, 'error' => $error->getMessage()];
     }
 }
 
