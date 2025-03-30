@@ -53,7 +53,5 @@ provide('submitForm', submitForm);
 </script>
 
 <template>
-  <span class="calculator-global">
-    <Calculator />
-  </span>
+  <Calculator />
 </template>

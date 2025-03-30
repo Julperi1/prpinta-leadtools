@@ -242,51 +242,52 @@ function reset() {
 provide('computedPrice', computedPrice);
 </script>
 <template>
+  <v-sheet>
+    <!-- Steps -->
+    <v-sheet class="bg-grey-lighten-4 d-flex align-center justify-center">
+      <v-sheet class="bg-transparent lf-steps d-flex py-2 position-relative">
+        <v-card icon v-for="step in 5" :key="step" style="z-index: 2" :class="stepMargin(step)" :color="stepColor(step)"
+          flat class="pa-1">
+          <v-icon size="xx-large" :icon="step == 5 ? '$check' : `$numeric${step}`"> </v-icon>
+        </v-card>
 
-  <!-- Steps -->
-  <v-sheet class="bg-grey-lighten-4 d-flex align-center justify-center">
-    <v-sheet class="bg-transparent lf-steps d-flex py-2 position-relative">
-      <v-card icon v-for="step in 5" :key="step" style="z-index: 2" :class="stepMargin(step)" :color="stepColor(step)"
-        flat class="pa-1">
-        <v-icon size="xx-large" :icon="step == 5 ? '$check' : `$numeric${step}`"> </v-icon>
-      </v-card>
+        <v-divider class="position-absolute opacity-90" width="100%" thickness="5" :style="stepLineStyles"></v-divider>
+      </v-sheet>
 
-      <v-divider class="position-absolute opacity-90" width="100%" thickness="5" :style="stepLineStyles"></v-divider>
     </v-sheet>
 
+    <!-- Calculator steps pages -->
+    <div>
+      <Squares v-show="currentStep == 1" ref="step1Component" />
+      <Floors v-show="currentStep == 2" ref="step2Component" />
+      <Walls v-show="currentStep == 3" ref="step3Component" />
+      <Contact v-show="currentStep == 4" ref="step4Component" />
+      <Result v-show="currentStep == 5" />
+    </div>
+
+
+    <v-sheet class="d-flex justify-center">
+      <v-card v-if="currentStep == 4" @click="submit()" :loading="loading" rounded
+        :color="loading ? 'grey-darken-2' : 'green'" flat class="pa-1 px-4 text-button">
+        <v-icon class="mr-2" icon="$check"></v-icon>
+        Katso hinta
+      </v-card>
+
+      <v-card v-else-if="currentStep !== 5" @click="tryNextStep()" rounded color="primary" flat
+        class="pa-1 px-4 text-button">
+        Seuraava
+        <v-icon icon="$arrowRight"></v-icon>
+      </v-card>
+    </v-sheet>
+
+    <v-sheet class="mt-4 d-flex justify-center">
+      <v-card v-if="currentStep !== 4" @click="reset()" rounded color="error" flat size="small" variant="text"
+        class="text-button px-2">
+        <v-icon icon="$refresh"></v-icon>
+        Aloita alusta
+      </v-card>
+    </v-sheet>
+
+    <v-sheet height="1" class="bg-grey-lighten-2 mt-4"></v-sheet>
   </v-sheet>
-
-  <!-- Calculator steps pages -->
-  <div>
-    <Squares v-show="currentStep == 1" ref="step1Component" />
-    <Floors v-show="currentStep == 2" ref="step2Component" />
-    <Walls v-show="currentStep == 3" ref="step3Component" />
-    <Contact v-show="currentStep == 4" ref="step4Component" />
-    <Result v-show="currentStep == 5" />
-  </div>
-
-
-  <v-sheet class="d-flex justify-center">
-    <v-card v-if="currentStep == 4" @click="submit()" :loading="loading" rounded
-      :color="loading ? 'grey-darken-2' : 'green'" flat class="pa-1 px-4 text-button">
-      <v-icon class="mr-2" icon="$check"></v-icon>
-      Katso hinta
-    </v-card>
-
-    <v-card v-else-if="currentStep !== 5" @click="tryNextStep()" rounded color="primary" flat
-      class="pa-1 px-4 text-button">
-      Seuraava
-      <v-icon icon="$arrowRight"></v-icon>
-    </v-card>
-  </v-sheet>
-
-  <v-sheet class="mt-4 d-flex justify-center">
-    <v-card v-if="currentStep !== 4" @click="reset()" rounded color="error" flat size="small" variant="text"
-      class="text-button px-2">
-      <v-icon icon="$refresh"></v-icon>
-      Aloita alusta
-    </v-card>
-  </v-sheet>
-
-  <v-sheet height="1" class="bg-grey-lighten-2 mt-4"></v-sheet>
 </template>
