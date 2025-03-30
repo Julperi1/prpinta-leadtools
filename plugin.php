@@ -72,7 +72,7 @@ add_action('wp_enqueue_scripts', 'prpinta_enqueue_scripts');
  * --------------------------------------------------------------------------
  * --------------------------------------------------------------------------
  */
-function handle_tools_leads() {
+function handle_vue_leads() {
     // Verify the nonce
     if (!isset($_POST['security']) || !wp_verify_nonce($_POST['security'], 'prpinta_lead_nonce')) {
         wp_send_json_error(['message' => 'Invalid nonce'], 403);
@@ -91,12 +91,13 @@ function handle_tools_leads() {
     if ($result['success']) {
         wp_send_json_success(['message' => 'Lead processed successfully!']);
     } else {
+        sendErrorEmail("Failed to send email");
         wp_send_json_error(['message' => 'Failed to process lead'], 500);
     }
 }
 
-add_action('wp_ajax_handle_tools_leads', 'handle_tools_leads');
-add_action('wp_ajax_nopriv_handle_tools_leads', 'handle_tools_leads');
+add_action('wp_ajax_handle_vue_leads', 'handle_vue_leads');
+add_action('wp_ajax_nopriv_handle_vue_leads', 'handle_vue_leads');
 
 /**
  * Send an email with the lead data
@@ -117,6 +118,8 @@ function sendLeadEmail($data)
         $service = sanitizeString($data['service']);
         $message = sanitizeString($data['message']);
 
+        $source = sanitizeString($data['source'] ?? '-');
+
         // Generate the email template
         $message = getTemplateHTML([
             'name' => $name,
@@ -126,6 +129,7 @@ function sendLeadEmail($data)
             'address' => $address,
             'service' => $service,
             'message' => $message,
+            'source' => $source,
         ]);
 
         // Check if the email template is generated
@@ -135,7 +139,7 @@ function sendLeadEmail($data)
         }
 
         // Set the email headers
-        $headers = "From: noreply@prpinta.fi" . "\r\n";
+        $headers = "From: LeadiFix tools leadifixtools@prpintakasittely.fi" . "\r\n";
         $headers .= "MIME-Version: 1.0" . "\r\n";
         $headers .= "Content-Type: text/html; charset=UTF-8" . "\r\n";
 
@@ -153,6 +157,7 @@ function sendLeadEmail($data)
         }
     } catch (Exception $error) {
         error_log($error);
+        sendErrorEmail($error);
         return ["success" => false];
     }
 }
@@ -188,29 +193,32 @@ function sanitizeString($input) {
 function getTemplateHTML($data): ?string
 {
     try {
-        $name = $data['name'] ?? 'N/A';
-        $email = $data['email'] ?? 'N/A';
-        $phone = $data['phone'] ?? 'N/A';
-        $city = $data['city'] ?? 'N/A';
-        $address = $data['address'] ?? 'N/A';
-        $service = $data['service'] ?? 'N/A';
-        $message = $data['message'] ?? 'N/A';
+        $name = $data['name'] ?? '-';
+        $email = $data['email'] ?? '-';
+        $phone = $data['phone'] ?? '-';
+        $city = $data['city'] ?? '-';
+        $address = $data['address'] ?? '-';
+        $service = $data['service'] ?? '-';
+        $message = $data['message'] ?? '-';
 
+        $source = $data['source'] ?? '-';
         ob_start();
 ?>
         <!DOCTYPE html>
         <html>
         <!-- Email template for the lead data -->
          <body>
-            <h2>Uusi laskuriliidi!</h2>
-            <p><strong>Nimi:</strong> <?= $name ?></p>
-            <p><strong>Sähköposti:</strong> <?= $email ?></p>
-            <p><strong>Puhelin:</strong> <?= $phone ?></p>
-            <p><strong>Kaupunki:</strong> <?= $city ?></p>
-            <p><strong>Osoite:</strong> <?= $address ?></p>
-            <p><strong>Pintakäsittely:</strong> <?= $service ?></p>
-            <p><strong>Viesti:</strong></p>
-            <p><?= nl2br($message) ?></p>
+            <h2>Uusi liidi lähteestä: <?= $source ?></h2>
+            <ul>
+                <li><strong>Nimi:</strong> <?= $name ?></li>
+                <li><strong>Sähköposti:</strong> <?= $email ?></li>
+                <li><strong>Puhelin:</strong> <?= $phone ?></li>
+                <li><strong>Kaupunki:</strong> <?= $city ?></li>
+                <li><strong>Osoite:</strong> <?= $address ?></li>
+                <li><strong>Palvelu:</strong> <?= $service ?></li>
+                <li><strong>Viesti:</strong> <?= nl2br($message) ?></li>
+            </ul>
+            </strong></p>
          </body>
         </html>
 
@@ -218,6 +226,7 @@ function getTemplateHTML($data): ?string
         return ob_get_clean();
     } catch (Throwable $error) {
         error_log($error);
+        sendErrorEmail($error);
         return null;
     }
 }
@@ -258,5 +267,6 @@ function sendErrorEmail($errorMessage)
     } catch (Exception $e) {
         // Log error details for further analysis
         error_log("Error sending email: " . $e->getMessage());
+        sendErrorEmail($e);
     }
 }

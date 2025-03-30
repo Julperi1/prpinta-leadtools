@@ -7,8 +7,3 @@ import Calculator from '@/components/paintcalc/Calculator.vue';
     <Calculator />
   </span>
 </template>
-<style>
-.calculator-global * {
-  user-select: none !important;
-}
-</style>

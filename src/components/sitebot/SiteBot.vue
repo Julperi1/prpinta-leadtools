@@ -1,6 +1,8 @@
 <script setup>
 import { ref, provide } from 'vue';
 import BottomSheet from '@/components/sitebot/BottomSheet.vue';
+import SmallSheetContent from '@/components/sitebot/content/SmallSheetContent.vue';
+import FullSheetContent from '@/components/sitebot/content/FullSheetContent.vue';
 
 const minimized = ref(false);
 const small = ref(true);

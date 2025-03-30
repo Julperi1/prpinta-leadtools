@@ -55,5 +55,7 @@ provide('submitForm', submitForm);
 provide('mobile', mobile.value);
 </script>
 <template>
-  <SiteBot />
+  <span class="sitebot-global">
+    <SiteBot />
+  </span>
 </template>

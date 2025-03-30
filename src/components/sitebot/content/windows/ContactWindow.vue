@@ -1,22 +1,36 @@
 <script setup>
 import { ref, inject, watch } from 'vue';
 
-const url = import.meta.env.VITE_WEBSITE_URL;
-
+const submitForm = inject('submitForm');
 const error = ref(null);
-const data = ref({ name: null, email: null, phone: null, message: null, city: null });
+const submitted = ref(false);
+const data = ref({
+  name: null,
+  email: null,
+  phone: null,
+  message: null,
+  city: null,
+});
 
-function submit() {
-  if (!validate('name') || !validate('email') || !validate('phone') || !validate('message') || !validate('city')) {
-    return;
+async function submit() {
+  try {
+    const fields = ['name', 'email', 'phone', 'city'];
+    for (const key of fields) if (!validate(key)) return;
+
+    console.log(data.value);
+    const response = await submitForm(data.value, 'Sivubotti - yhteydenottopyyntö');
+    if (response) {
+      submitted.value = true;
+    }
+  } catch (error) {
+    console.error(error);
   }
-
-  console.log('Data:', data.value);
 }
 
 function validate(key) {
   if (!data.value[key]) {
     error.value = key;
+    console.log('error', key);
     return false;
   } else {
     error.value = null;
