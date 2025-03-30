@@ -20,7 +20,7 @@ defineExpose({ error, data });
         <v-card-text v-if="error" class="text-error text-center text-caption py-0">
           Kerrosten määrä puuttuu
         </v-card-text>
-        <v-card-text v-else class="text-grey text-caption py-0">
+        <v-card-text v-else class="text-grey-darken-1 text-caption py-0 pt-1">
           Valitse määrä klikkaamalla
         </v-card-text>
       </v-sheet>
