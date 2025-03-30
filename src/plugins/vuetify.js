@@ -14,7 +14,6 @@ const vuetify = createVuetify({
     },
   },
   icons: {
-    defaultSet: 'mdi',
     aliases: {
       ...aliases,
       numeric1: mdiNumeric1,

@@ -4,7 +4,7 @@ import SiteBot from '@/components/sitebot/SiteBot.vue';
 import { useDisplay } from 'vuetify';
 
 const mobile = computed(() => {
-  return useDisplay().smAndDown;
+  return useDisplay()?.smAndDown;
 });
 
 async function submitForm(payloadData, source) {
@@ -20,9 +20,9 @@ async function submitForm(payloadData, source) {
   };
 
   // Append any additional fields from the payloadData
-  if (payloadData?.additionals && Array.isArray(payloadData.additionals)) {
-    payloadData.additionals.forEach((item) => {
-      payload[item.name] = item.value;
+  if (payloadData?.additionals) {
+    payloadData.additionals?.forEach((item) => {
+      payload[item?.name] = item?.value;
     });
   }
 
