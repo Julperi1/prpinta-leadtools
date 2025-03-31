@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 
+const mobile = inject('mobile');
 const error = ref(null);
 const data = ref({ name: null, email: null, phone: null, });
 
@@ -9,7 +10,7 @@ defineExpose({ error, data });
 <template>
   <v-sheet>
     <v-card-title class="text-center mt-4 mb-4">
-      Täytä lomake niin näet hinta arvion heti!
+      Täytä lomake niin näet <br v-if="mobile.value"> hinta-arvion heti!
     </v-card-title>
     <v-sheet class="d-flex flex-column align-center justify-center">
       <v-sheet>

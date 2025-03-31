@@ -239,6 +239,7 @@ function reset() {
   }
 }
 
+provide('mobile', mobile);
 provide('computedPrice', computedPrice);
 </script>
 <template>
@@ -288,6 +289,6 @@ provide('computedPrice', computedPrice);
       </v-card>
     </v-sheet>
 
-    <v-sheet height="1" class="bg-grey-lighten-2 mt-4"></v-sheet>
+    <v-sheet height="1" class="mt-4"></v-sheet>
   </v-sheet>
 </template>

@@ -8,7 +8,7 @@ defineExpose({ error, data });
 </script>
 <template>
   <v-sheet>
-    <v-card-title class="text-center mt-4">Annan kerrosten määrä</v-card-title>
+    <v-card-title style="font-size:20px !important" class="text-center mt-4">Anna kerrosten määrä</v-card-title>
     <v-sheet class="d-flex flex-column align-center justify-center" height="150">
       <v-sheet>
         <v-btn-toggle v-model="data.floors" divided base-color="grey-lighten-3" color="green" mandatory>

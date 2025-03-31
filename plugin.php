@@ -202,12 +202,12 @@ function getTemplateHTML($data): ?string
         $message = $data['message'] ?? '-';
 
         $source = $data['source'] ?? '-';
-        ob_start();
-?>
+        ob_start();?>
+
+        <!-- HTML Email Template -->
         <!DOCTYPE html>
         <html>
-        <!-- Email template for the lead data -->
-         <body>
+        <body>
             <h2>Uusi liidi lähteestä: <?= $source ?></h2>
             <ul>
                 <li><strong>Nimi:</strong> <?= $name ?></li>
