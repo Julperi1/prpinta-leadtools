@@ -60,46 +60,51 @@ defineExpose({
 </script>
 
 <template>
-  <v-sheet class="mt-2 pb-2">
+  <v-sheet class="mt-1 pb-1">
 
     <v-sheet class="d-flex">
       <v-sheet width="50%" class="pr-1">
         <v-text-field v-model="data.name" label="Nimi / Yritys *" density="compact" variant="solo-filled" flat
-          :error-messages="error === 'name' ? ['Anna oikea arvo'] : []" id="prpinta-offer-name">
+          :error-messages="error === 'name' ? ['Anna oikea arvo'] : []" id="prpinta-offer-name" rounded="lg">
         </v-text-field>
       </v-sheet>
       <v-sheet width="50%" class="pl-1">
         <v-text-field v-model="data.phone" label="Puhelinnumero *" density="compact" variant="solo-filled" flat
-          :error-messages="error === 'phone' ? ['Anna oikea puhelnnumero'] : []" id="prpinta-offer-phone">
+          :error-messages="error === 'phone' ? ['Anna oikea puhelnnumero'] : []" id="prpinta-offer-phone" rounded="lg">
         </v-text-field>
       </v-sheet>
     </v-sheet>
 
     <v-text-field v-model="data.email" label="Sähköpostiosoite *" density="compact" variant="solo-filled" flat
-      :error-messages="error === 'email' ? ['Anna oikea sähköpostiosoite'] : []" id="prpinta-offer-email">
+      :error-messages="error === 'email' ? ['Anna oikea sähköpostiosoite'] : []" id="prpinta-offer-email" rounded="lg">
     </v-text-field>
 
     <v-sheet class="d-flex">
       <v-sheet width="45%" class="pr-2">
         <v-text-field v-model="data.city" label="Kaupunki *" density="compact" variant="solo-filled" flat
-          :error-messages="error === 'city' ? ['Anna oikea puhelnnumero'] : []" rows="4" id="prpinta-offer-city">
+          :error-messages="error === 'city' ? ['Anna oikea puhelnnumero'] : []" rows="4" id="prpinta-offer-city"
+          rounded="lg">
         </v-text-field>
       </v-sheet>
       <v-sheet width="55%">
         <v-text-field v-model="data.address" label="Osoite *" density="compact" variant="solo-filled" flat
-          :error-messages="error === 'address' ? ['Anna oikea sähköpostiosoite'] : []" id="prpinta-offer-address">
+          :error-messages="error === 'address' ? ['Anna oikea sähköpostiosoite'] : []" id="prpinta-offer-address"
+          rounded="lg">
         </v-text-field>
       </v-sheet>
     </v-sheet>
 
     <v-select v-model="data.service" :items="services" label="Palvelu *" density="compact" variant="solo-filled" flat
-      id="prpinta-offer-service">
+      id="prpinta-offer-service" rounded="lg">
     </v-select>
 
     <v-textarea v-model="data.message" auto-grow label="Viestisi" rows="2" density="compact" variant="solo-filled" flat
-      id="prpinta-offer-message">
+      id="prpinta-offer-message" rounded="lg">
     </v-textarea>
 
-    <v-btn @click="submit" color="primary" block flat>Lähetä</v-btn>
+    <v-card flat rounded="lg" class="text-button d-flex align-center justify-center" @click="submit" color="primary"
+      height="40" block>
+      Lähetä
+    </v-card>
   </v-sheet>
 </template>

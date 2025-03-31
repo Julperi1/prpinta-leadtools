@@ -5,6 +5,7 @@ import ContactWindow from '@/components/sitebot/content/windows/ContactWindow.vu
 import ServicesWindow from '@/components/sitebot/content/windows/ServicesWindow.vue';
 import OfferWindow from '@/components/sitebot/content/windows/OfferWindow.vue';
 
+const image = inject('image');
 const closeFull = inject('closeFull');
 const view = ref('menu');
 
@@ -33,9 +34,7 @@ provide('back', back);
   <v-card class="rounded-t-lg" elevation="0">
     <!-- Toolbar -->
     <v-toolbar flat class="py-1 pl-3 pr-4 bg-white">
-      <v-avatar rounded="lg" size="50"
-        image="https://prpintakasittely.fi/wp-content/uploads/2023/07/eeee-1024x1024.jpg">
-      </v-avatar>
+      <v-avatar rounded="lg" size="50" :image="image" />
       <v-card-title>
         <span v-if="view === 'menu'">Valitse alta</span>
         <span v-else-if="view === 'offer'">Tarjouspyyntö</span>
@@ -56,13 +55,13 @@ provide('back', back);
     <v-sheet height="1" class="bg-grey-lighten-2"></v-sheet>
 
     <!-- Content -->
-    <v-sheet class="pa-4 overflow-y-scroll" max-height="500">
+    <v-sheet class="pa-4 overflow-y-hidden">
       <v-window v-model="view" direction="vertical" disabled>
         <v-window-item value="menu" eager>
           <v-sheet class="d-flex flex-column ga-2">
 
             <!-- Open offer form-->
-            <v-card @click="view = 'offer'" class="py-2" color="primary" flat>
+            <v-card @click="view = 'offer'" class="py-2" color="primary" rounded="lg" flat>
               <v-card-title class="d-flex align-center justify-space-between">
                 Tarjouspyyntö
                 <v-icon icon="$clipboard"></v-icon>
@@ -70,7 +69,7 @@ provide('back', back);
             </v-card>
 
             <!-- Open contact form-->
-            <v-card @click="view = 'contact'" class="py-2" color="primary" flat>
+            <v-card @click="view = 'contact'" class="py-2" color="primary" rounded="lg" flat>
               <v-card-title class="d-flex align-center justify-space-between">
                 Yhteydenottopyyntö
                 <v-icon icon="$accountBox"></v-icon>
@@ -78,7 +77,7 @@ provide('back', back);
             </v-card>
 
             <!-- Open price calculator page-->
-            <v-card @click="redirectToCalc" class="py-2" color="primary" flat>
+            <v-card @click="redirectToCalc" class="py-2" color="primary" rounded="lg" flat>
               <v-card-title class="d-flex align-center justify-space-between">
                 Hintalaskuri
                 <v-icon icon="$calculator"></v-icon>
@@ -86,7 +85,7 @@ provide('back', back);
             </v-card>
 
             <!-- Open services page-->
-            <v-card @click="view = 'services'" class="py-2" color="primary" flat>
+            <v-card @click="view = 'services'" class="py-2" color="primary" rounded="lg" flat>
               <v-card-title class="d-flex align-center justify-space-between">
                 Palvelumme
                 <v-icon icon="$formatList"></v-icon>

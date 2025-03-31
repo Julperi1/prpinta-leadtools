@@ -51,30 +51,34 @@ defineExpose({
 </script>
 
 <template>
-  <v-sheet class="mt-2 pb-2">
+  <v-sheet class="mt-1 pb-1">
     <v-text-field v-model="data.name" label="Nimi / Yritys *" density="compact" variant="solo-filled" flat
       :error-messages="error === 'name' ? ['Anna oikea arvo'] : []" @update:modelValue="validate('name')"
-      id="prpinta-contact-name">
+      id="prpinta-contact-name" rounded="lg">
     </v-text-field>
 
     <v-text-field v-model="data.email" label="Sähköpostiosoite *" type="email" density="compact" variant="solo-filled"
       flat :error-messages="error === 'email' ? ['Anna oikea sähköpostiosoite'] : []" id="prpinta-contact-email"
-      @update:modelValue="validate('email')">
+      @update:modelValue="validate('email')" rounded="lg">
     </v-text-field>
 
     <v-text-field v-model="data.phone" label="Puhelinnumero *" density="compact" variant="solo-filled" flat
       :error-messages="error === 'phone' ? ['Anna oikea puhelnnumero'] : []" @update:modelValue="validate('phone')"
-      id="prpinta-contact-phone">
+      id="prpinta-contact-phone" rounded="lg">
     </v-text-field>
 
     <v-text-field v-model="data.city" label="Kaupunki *" density="compact" variant="solo-filled" flat
-      :error-messages="error === 'city' ? ['Anna oikea puhelnnumero'] : []" rows="4" id="prpinta-contact-city">
+      :error-messages="error === 'city' ? ['Anna oikea puhelnnumero'] : []" rows="4" id="prpinta-contact-city"
+      rounded="lg">
     </v-text-field>
 
     <v-textarea v-model="data.message" auto-grow label="Mitä pyyntösi koskee?" density="compact" variant="solo-filled"
-      flat rows="4" id="prpinta-contact-message">
+      flat rows="4" id="prpinta-contact-message" rounded="lg">
     </v-textarea>
 
-    <v-btn @click="submit" color="primary" block flat>Lähetä</v-btn>
+    <v-card flat rounded="lg" class="text-button d-flex align-center justify-center" @click="submit" color="primary"
+      height="40" block>
+      Lähetä
+    </v-card>
   </v-sheet>
 </template>

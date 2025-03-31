@@ -268,13 +268,13 @@ provide('computedPrice', computedPrice);
 
 
     <v-sheet class="d-flex justify-center">
-      <v-card v-if="currentStep == 4" @click="submit()" :loading="loading" rounded
+      <v-card v-if="currentStep == 4" @click="submit()" :loading="loading" rounded="lg"
         :color="loading ? 'grey-darken-2' : 'green'" flat class="pa-1 px-4 text-button">
         <v-icon class="mr-2" icon="$check"></v-icon>
         Katso hinta
       </v-card>
 
-      <v-card v-else-if="currentStep !== 5" @click="tryNextStep()" rounded color="primary" flat
+      <v-card v-else-if="currentStep !== 5" @click="tryNextStep()" rounded="lg" color="primary" flat
         class="pa-1 px-4 text-button">
         Seuraava
         <v-icon icon="$arrowRight"></v-icon>
@@ -282,7 +282,7 @@ provide('computedPrice', computedPrice);
     </v-sheet>
 
     <v-sheet class="mt-4 d-flex justify-center">
-      <v-card v-if="currentStep !== 4" @click="reset()" rounded color="error" flat size="small" variant="text"
+      <v-card v-if="currentStep !== 4" @click="reset()" rounded="lg" color="error" flat size="small" variant="text"
         class="text-button px-2">
         <v-icon icon="$refresh"></v-icon>
         Aloita alusta

@@ -23,11 +23,9 @@ function open(link) {
 </script>
 
 <template>
-  <v-card @click="back" color="primary" variant="tonal">
-    <v-card-text class="d-flex align-center pa-2">
-      <v-icon icon="$arrowLeft"></v-icon>
-      <b>Takaisin</b>
-    </v-card-text>
+  <v-card @click="back" color="primary" class="d-flex align-center" variant="tonal" rounded="lg" height="40">
+    <v-icon class="ml-2" icon="$arrowLeft"></v-icon>
+    <b>Takaisin</b>
   </v-card>
 
   <v-sheet>
@@ -36,23 +34,21 @@ function open(link) {
       <v-icon icon="$paint"></v-icon>
     </v-card-title>
 
-    <v-card v-for="service in paintServices" @click="open(service.link)" class="mb-2 " flat color="primary">
-      <v-card-text class="d-flex align-center justify-space-between pa-2">
-        <b> {{ service.name }}</b>
-        <v-icon icon="$arrowRight"></v-icon>
-      </v-card-text>
+    <v-card v-for="service in paintServices" @click="open(service.link)" rounded="lg"
+      class="mb-2 d-flex align-center justify-space-between px-2" height="40" flat color="primary">
+      <b> {{ service.name }}</b>
+      <v-icon icon="$arrowRight"></v-icon>
     </v-card>
 
-    <v-card-title class="pb-0 pl-2">
+    <v-card-title class="pb-2 pl-2">
       Kattoplavelut
       <v-icon icon="$roof"></v-icon>
     </v-card-title>
 
-    <v-card v-for="service in roofingServices" @click="open(service.link)" class="mt-2" flat color="primary">
-      <v-card-text class="d-flex align-center justify-space-between pa-2">
-        <b> {{ service.name }}</b>
-        <v-icon icon="$arrowRight"></v-icon>
-      </v-card-text>
+    <v-card v-for="service in roofingServices" @click="open(service.link)" rounded="lg"
+      class="mb-2 d-flex align-center justify-space-between px-2" height="40" flat color="primary">
+      <b> {{ service.name }}</b>
+      <v-icon icon="$arrowRight"></v-icon>
     </v-card>
   </v-sheet>
 </template>
