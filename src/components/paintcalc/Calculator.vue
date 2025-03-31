@@ -248,7 +248,7 @@ provide('computedPrice', computedPrice);
     <v-sheet class="bg-grey-lighten-4 d-flex align-center justify-center">
       <v-sheet class="bg-transparent lf-steps d-flex py-2 position-relative">
         <v-card icon v-for="step in 5" :key="step" style="z-index: 2" :class="stepMargin(step)" :color="stepColor(step)"
-          flat class="pa-1">
+          flat class="pa-1" rounded="lg">
           <v-icon size="xx-large" :icon="step == 5 ? '$check' : `$numeric${step}`"> </v-icon>
         </v-card>
 

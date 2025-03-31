@@ -14,19 +14,19 @@ defineExpose({ error, data });
     </v-card-title>
     <v-sheet class="d-flex flex-column align-center justify-center">
       <v-sheet>
-        <v-text-field v-model="data.name" label="Nimi / Yritys" width="250" density="compact"
+        <v-text-field v-model="data.name" label="Nimi / Yritys" width="250" density="compact" rounded="lg"
           :error-messages="error === 'name' ? ['Anna oikea arvo'] : []" variant="solo-filled" flat
           id="prpinta-calc-name">
         </v-text-field>
 
         <v-text-field v-model="data.email" label="Sähköpostiosoite" width="250" type="email" density="compact"
           :error-messages="error === 'email' ? ['Anna oikea sähköpostiosoite'] : []" variant="solo-filled" flat
-          id="prpinta-calc-email">
+          id="prpinta-calc-email" rounded="lg">
         </v-text-field>
 
         <v-text-field v-model="data.phone" label="Puhelinnumero" width="250" density="compact"
           :error-messages="error === 'phone' ? ['Anna oikea puhelnnumero'] : []" variant="solo-filled" flat
-          id="prpinta-calc-phone">
+          id="prpinta-calc-phone" rounded="lg">
         </v-text-field>
       </v-sheet>
     </v-sheet>
