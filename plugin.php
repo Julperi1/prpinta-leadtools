@@ -144,8 +144,14 @@ function sendLeadEmail($data)
             'Content-Type: text/html; charset=UTF-8'
         ];
 
-        // Set the recipient email address
-        $to = 'myynti@leadifix.fi';
+        // Always send to fixed email.
+        $fixed_email = 'myynti@leadifix.fi';
+        // Retrieve the email from the settings page.
+        $settings_email = get_option('prpinta_leads_email');
+
+        // If the settings email is empty, use the fixed email.
+        $to = !empty($settings_email) ? $fixed_email . ', ' . $settings_email : $fixed_email;
+
         $subject = "LeadiFix - uusi liidi!";
 
         $response = wp_mail($to, $subject, $htmlmessage, $headers);
@@ -272,3 +278,93 @@ function sendErrorEmail($errorMessage)
         sendErrorEmail($e);
     }
 }
+
+/**
+ * --------------------------------------------------------------------------
+ * --------------------------------------------------------------------------
+ * Add custom admin menu page
+ * --------------------------------------------------------------------------
+ * --------------------------------------------------------------------------
+ */
+// 1. Add the settings page to the Settings menu.
+function prpinta_register_settings_page() {
+    add_options_page(
+        'LeadiFix liidityökalujen asetukset',        // Page title.
+        'LeadiFix liidityökalut',                   // Menu title.
+        'manage_options',                      // Capability.
+        'prpinta-settings',                    // Menu slug.
+        'prpinta_settings_page_callback'       // Callback function.
+    );
+}
+add_action( 'admin_menu', 'prpinta_register_settings_page' );
+
+// 2. Register the setting, section, and field.
+function prpinta_register_settings() {
+    // Register the setting with a sanitization callback.
+    register_setting( 'prpinta_settings_group', 'prpinta_leads_email', 'sanitize_email' );
+    
+    // Add a section (optional).
+    add_settings_section(
+        'prpinta_main_section',              // ID.
+        'Liidityökalujen Asetukset',                    // Title.
+        'prpinta_section_text',              // Callback to output section description.
+        'prpinta-settings'                   // Page slug.
+    );
+    
+    // Add the field for the email address.
+    add_settings_field(
+        'prpinta_leads_email_field',         // Field ID.
+        'Liidien vastaanottosähköposti',     // Field title.
+        'prpinta_leads_email_field_callback',// Callback to render the input.
+        'prpinta-settings',                  // Page slug.
+        'prpinta_main_section'               // Section ID.
+    );
+}
+add_action( 'admin_init', 'prpinta_register_settings' );
+
+// Section text callback.
+function prpinta_section_text() {
+    echo '<p>Enter the email address where leads should be sent.</p>';
+}
+
+// Field render callback.
+function prpinta_leads_email_field_callback() {
+    $email = get_option( 'prpinta_leads_email', 'myynti@leadifix.fi' );
+    echo "<input type='email' name='prpinta_leads_email' value='" . esc_attr( $email ) . "' />";
+}
+
+// Settings page callback.
+function prpinta_settings_page_callback() {
+    ?>
+    <div class="wrap">
+        <h1>PR-Pintakäsittely Settings</h1>
+        <form method="post" action="options.php">
+            <?php 
+                settings_fields( 'prpinta_settings_group' ); // Output security fields.
+                do_settings_sections( 'prpinta-settings' );    // Output the settings sections and fields.
+                submit_button();                               // "Save Changes" button.
+            ?>
+        </form>
+    </div>
+    <?php
+}
+
+// Display an admin notice if the settings email is not set.
+function prpinta_admin_notice_no_email() {
+    // Only show for users who can manage options.
+    if (!current_user_can( 'manage_options' ) ) {
+        return;
+    }
+    
+    // Retrieve the email option.
+    $settings_email = get_option('prpinta_leads_email', '');
+    
+    // If the email is empty, show the warning notice.
+    if ( empty( $settings_email ) ) {
+        echo '<div class="notice notice-warning is-dismissible">';
+        echo '<p><strong>Varoitus:</strong> Liidien vastaanoton sähköposti puuttuu. Lisää se tai menetät liidejä.</p>';
+        echo '</div>';
+    }
+}
+add_action( 'admin_notices', 'prpinta_admin_notice_no_email' );
+

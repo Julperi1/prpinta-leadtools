@@ -17,6 +17,6 @@ paintCalcApp.use(vuetify);
 sitebotApp.use(vuetify);
 
 // Mount both applications to their respective DOM elements
-popupApp.mount('#popup-app');
 sitebotApp.mount('#sitebot-app');
+popupApp.mount('#popup-app');
 paintCalcApp.mount('#paintcalc-app');

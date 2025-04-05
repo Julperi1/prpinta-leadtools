@@ -1,89 +1,138 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, inject } from 'vue';
 
 const isOpen = ref(true);
-let timeoutId = null;
 
-// Timing constants
-const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-const DELAY_MS = 15000;
+const submitForm = inject('submitForm');
+const services = ref([
+  'Ulkomaalaus', 'Sisämaalaus',
+  'Sokkelin maalaus', 'Terassin käsittely',
+  'Tiilikaton pinnoitus', 'Tiilikaton puhdistus',
+  'Peltikaton maalaus', 'Muu (kirjoita viestiin)',
+]);
 
-const checkPopupConditions = () => {
-  const lastShown = localStorage.getItem('popupLastShown');
-  const now = Date.now();
+const submitted = ref(false);
+const error = ref(null);
+const data = ref({
+  name: null,
+  email: null,
+  phone: null,
+  city: null,
+  address: null,
+  service: null,
+  message: null,
+});
 
-  // Check if popup was shown in the last week
-  if (lastShown && (now - parseInt(lastShown)) < ONE_WEEK_MS) return;
+async function submit() {
+  try {
+    const fields = ['name', 'email', 'phone', 'city', 'address', 'service'];
+    for (const key of fields) if (!validate(key)) return;
 
-  // Get or create scheduled time
-  let scheduledTime = localStorage.getItem('popupScheduledTime');
-  if (!scheduledTime) {
-    scheduledTime = now + DELAY_MS;
-    localStorage.setItem('popupScheduledTime', scheduledTime);
+    console.log(data.value);
+    const response = await submitForm(data.value, 'Sivubotti - tarjouspyyntö');
+    if (response) {
+      submitted.value = true;
+    }
+  } catch (error) {
+    console.error(error);
   }
+}
 
-  const remainingTime = scheduledTime - now;
-
-  if (remainingTime <= 0) {
-    showPopup();
+function validate(key) {
+  if (!data.value[key]) {
+    error.value = key;
+    console.log('error', key);
+    return false;
   } else {
-    timeoutId = setTimeout(showPopup, remainingTime);
+    error.value = null;
   }
-};
 
-const showPopup = () => {
-  isOpen.value = true;
-  localStorage.setItem('popupLastShown', Date.now().toString());
-  localStorage.removeItem('popupScheduledTime');
-};
+  return true;
+}
 
-const closePopup = () => {
+function close() {
+  for (const key in data.value) {
+    data.value[key] = null;
+  }
+
+  error.value = null;
   isOpen.value = false;
-};
-
-const handleStorageEvent = (event) => {
-  if (event.key === 'popupLastShown') {
-    // Another tab has shown the popup
-    clearTimeout(timeoutId);
-    isOpen.value = false;
-  } else if (event.key === 'popupScheduledTime') {
-    // Schedule updated in another tab
-    clearTimeout(timeoutId);
-    checkPopupConditions();
-  }
-};
-
-onMounted(() => {
-  checkPopupConditions();
-  window.addEventListener('storage', handleStorageEvent);
-});
-
-onUnmounted(() => {
-  clearTimeout(timeoutId);
-  window.removeEventListener('storage', handleStorageEvent);
-});
-
-function submit() {
-  // TODO
 }
 </script>
 
 <template>
-  <v-dialog v-model="isOpen" max-width="500" style="user-select: none;">
-    <v-card rounded="lg" class="pa-2">
-      <v-card-title class="d-flex align-center justify-space-between">
-        Special Offer!
+  <v-dialog v-model="isOpen" max-width="500">
+    <v-card rounded="lg" class="pa-2 lf-backgroung">
+      <v-card-title class="d-flex align-center justify-space-between pa-2">
+        Moro! Projekti suunnitteilla?
 
-        <v-sheet>
-          <v-icon icon="$close" @click="closePopup"></v-icon>
+        <v-sheet class="bg-transparent">
+          <v-icon icon="$close" @click="close"></v-icon>
         </v-sheet>
       </v-card-title>
-      <v-card-text>
-        Here's a weekly exclusive offer just for you!
-      </v-card-text>
-      <v-card @click="submit()" class="py-1 text-button text-center rounded-lg" color="primary" flat>
-        Lähetä <v-icon icon="$send"></v-icon>
-      </v-card>
+
+      <v-sheet class="mb-2 mx-2 bg-transparent">
+        Saat meiltä talon maalauksen <b>maalien hinnasta 50% alennusta</b> kun kysyt tarjouksen 31.4 mennessä!
+        Jätä tarjouspyyntö tästä, ja hyödynnä tarjous! Tarjous ei sido sinua mihinkään.
+      </v-sheet>
+
+      <!-- Form fields -->
+      <v-sheet class="mt-2 pa-2 bg-transparent">
+        <v-sheet class="d-flex bg-transparent">
+          <v-sheet width="50%" class="pr-1 bg-transparent">
+            <v-text-field v-model="data.name" label="Nimi / Yritys *" density="compact" variant="solo-filled" flat
+              :error-messages="error === 'name' ? ['Anna oikea arvo'] : []" id="prpinta-offer-name" rounded="lg">
+            </v-text-field>
+          </v-sheet>
+          <v-sheet width="50%" class="pl-1 bg-transparent">
+            <v-text-field v-model="data.phone" label="Puhelinnumero *" density="compact" variant="solo-filled" flat
+              :error-messages="error === 'phone' ? ['Anna oikea puhelnnumero'] : []" id="prpinta-offer-phone"
+              rounded="lg">
+            </v-text-field>
+          </v-sheet>
+        </v-sheet>
+
+        <v-text-field v-model="data.email" label="Sähköpostiosoite *" density="compact" variant="solo-filled" flat
+          :error-messages="error === 'email' ? ['Anna oikea sähköpostiosoite'] : []" id="prpinta-offer-email"
+          rounded="lg">
+        </v-text-field>
+
+        <v-sheet class="d-flex bg-transparent">
+          <v-sheet width="45%" class="pr-2 bg-transparent">
+            <v-text-field v-model="data.city" label="Kaupunki *" density="compact" variant="solo-filled" flat
+              :error-messages="error === 'city' ? ['Anna oikea puhelnnumero'] : []" rows="4" id="prpinta-offer-city"
+              rounded="lg">
+            </v-text-field>
+          </v-sheet>
+          <v-sheet width="55%" class="bg-transparent">
+            <v-text-field v-model="data.address" label="Osoite *" density="compact" variant="solo-filled" flat
+              :error-messages="error === 'address' ? ['Anna oikea sähköpostiosoite'] : []" id="prpinta-offer-address"
+              rounded="lg">
+            </v-text-field>
+          </v-sheet>
+        </v-sheet>
+
+        <v-select v-model="data.service" :items="services" label="Palvelu *" density="compact" variant="solo-filled"
+          flat id="prpinta-offer-service" rounded="lg">
+        </v-select>
+
+        <v-textarea v-model="data.message" auto-grow label="Viestisi" rows="2" density="compact" variant="solo-filled"
+          flat id="prpinta-offer-message" rounded="lg">
+        </v-textarea>
+
+        <v-card flat rounded="lg" class="text-button d-flex align-center justify-center" @click="submit" color="primary"
+          height="40" block>
+          Lähetä
+        </v-card>
+      </v-sheet>
+
     </v-card>
   </v-dialog>
 </template>
+
+<style>
+.lf-backgroung {
+  background-color: #FFFFFF;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpolygon fill='%235A6CBE' fill-opacity='0.02' points='120 120 60 120 90 90 120 60 120 0 120 0 60 60 0 0 0 60 30 90 60 120 120 120 '/%3E%3C/svg%3E");
+}
+</style>
