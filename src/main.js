@@ -18,5 +18,14 @@ sitebotApp.use(vuetify);
 
 // Mount both applications to their respective DOM elements
 sitebotApp.mount('#sitebot-app');
-popupApp.mount('#popup-app');
 paintCalcApp.mount('#paintcalc-app');
+
+// We only need to mount the popup app when the popup has not been opened or it has been a week since the last open
+const lastOpen = localStorage.getItem('popupLastOpen');
+const now = new Date();
+const lastOpenDate = lastOpen ? new Date(lastOpen) : null;
+const oneWeekAgo = new Date(now);
+oneWeekAgo.setDate(now.getDate() - 7);
+if (!lastOpen || lastOpenDate < oneWeekAgo) {
+    popupApp.mount('#popup-app');
+}

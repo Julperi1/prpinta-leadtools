@@ -1,8 +1,16 @@
 <script setup>
-import { ref, onMounted, onUnmounted, inject } from 'vue';
+import { ref, onMounted, inject } from 'vue';
+const VITE_COMPILANCE_URL = import.meta.env.VITE_COMPILANCE_URL;
 
-const isOpen = ref(true);
+onMounted(() => {
+  setTimeout(() => {
+    const now = new Date();
+    localStorage.setItem('popupLastOpen', now.toISOString());
+    isOpen.value = true;
+  }, 5000);
+});
 
+const isOpen = ref(false);
 const submitForm = inject('submitForm');
 const services = ref([
   'Ulkomaalaus', 'Sisämaalaus',
@@ -21,11 +29,12 @@ const data = ref({
   address: null,
   service: null,
   message: null,
+  compilance: false,
 });
 
 async function submit() {
   try {
-    const fields = ['name', 'email', 'phone', 'city', 'address', 'service'];
+    const fields = ['name', 'email', 'phone', 'city', 'address', 'service', 'compilance'];
     for (const key of fields) if (!validate(key)) return;
 
     console.log(data.value);
@@ -64,7 +73,7 @@ function close() {
   <v-dialog v-model="isOpen" max-width="500">
     <v-card rounded="lg" class="pa-2 lf-backgroung">
       <v-card-title class="d-flex align-center justify-space-between pa-2">
-        Moro! Projekti suunnitteilla?
+        <b class=""> Moro! Projekti suunnitteilla?</b>
 
         <v-sheet class="bg-transparent">
           <v-icon icon="$close" @click="close"></v-icon>
@@ -72,8 +81,9 @@ function close() {
       </v-card-title>
 
       <v-sheet class="mb-2 mx-2 bg-transparent">
-        Saat meiltä talon maalauksen <b>maalien hinnasta 50% alennusta</b> kun kysyt tarjouksen 31.4 mennessä!
-        Jätä tarjouspyyntö tästä, ja hyödynnä tarjous! Tarjous ei sido sinua mihinkään.
+        Saat meiltä talon maalauksen <b class="text-primary">maalien hinnasta 50% alennusta</b> kun kysyt tarjouksen
+        31.4 mennessä!
+        Jätä tarjouspyyntö tästä, ja hyödynnä tarjous! Tarjouspyyntö ei sido sinua mihinkään.
       </v-sheet>
 
       <!-- Form fields -->
@@ -119,6 +129,18 @@ function close() {
         <v-textarea v-model="data.message" auto-grow label="Viestisi" rows="2" density="compact" variant="solo-filled"
           flat id="prpinta-offer-message" rounded="lg">
         </v-textarea>
+
+        <v-checkbox v-model="data.compilance" density="compact" class="ma-0 pa-0"
+          :error-messages="error === 'compilance' ? ['Pakollinen valinta'] : []">
+          <template v-slot:label>
+            <v-card-text class="text-body-2 pa-0">
+              Hyväksyn
+              <a :href="VITE_COMPILANCE_URL">
+                tietosuojakäytännön
+              </a>
+            </v-card-text>
+          </template>
+        </v-checkbox>
 
         <v-card flat rounded="lg" class="text-button d-flex align-center justify-center" @click="submit" color="primary"
           height="40" block>

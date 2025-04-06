@@ -10,11 +10,12 @@ const data = ref({
   phone: null,
   message: null,
   city: null,
+  compilance: false,
 });
 
 async function submit() {
   try {
-    const fields = ['name', 'email', 'phone', 'city'];
+    const fields = ['name', 'email', 'phone', 'city', 'compilance'];
     for (const key of fields) if (!validate(key)) return;
 
     console.log(data.value);
@@ -75,6 +76,18 @@ defineExpose({
     <v-textarea v-model="data.message" auto-grow label="Mitä pyyntösi koskee?" density="compact" variant="solo-filled"
       flat rows="4" id="prpinta-contact-message" rounded="lg">
     </v-textarea>
+
+    <v-checkbox v-model="data.compilance" density="compact" class="ma-0 pa-0"
+      :error-messages="error === 'compilance' ? ['Pakollinen valinta'] : []">
+      <template v-slot:label>
+        <v-card-text class="text-body-2 pa-0">
+          Hyväksyn
+          <a :href="VITE_COMPILANCE_URL">
+            tietosuojakäytännön
+          </a>
+        </v-card-text>
+      </template>
+    </v-checkbox>
 
     <v-card flat rounded="lg" class="text-button d-flex align-center justify-center" @click="submit" color="primary"
       height="40" block>

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, inject } from 'vue';
 
+const VITE_COMPILANCE_URL = import.meta.env.VITE_COMPILANCE_URL;
 const submitForm = inject('submitForm');
 const services = ref([
   'Ulkomaalaus', 'Sisämaalaus',
@@ -19,11 +20,12 @@ const data = ref({
   address: null,
   service: null,
   message: null,
+  compilance: false,
 });
 
 async function submit() {
   try {
-    const fields = ['name', 'email', 'phone', 'city', 'address', 'service'];
+    const fields = ['name', 'email', 'phone', 'city', 'address', 'service', 'compilance'];
     for (const key of fields) if (!validate(key)) return;
 
     console.log(data.value);
@@ -101,6 +103,18 @@ defineExpose({
     <v-textarea v-model="data.message" auto-grow label="Viestisi" rows="2" density="compact" variant="solo-filled" flat
       id="prpinta-offer-message" rounded="lg">
     </v-textarea>
+
+    <v-checkbox v-model="data.compilance" density="compact" class="ma-0 pa-0"
+      :error-messages="error === 'compilance' ? ['Pakollinen valinta'] : []">
+      <template v-slot:label>
+        <v-card-text class="text-body-2 pa-0">
+          Hyväksyn
+          <a :href="VITE_COMPILANCE_URL">
+            tietosuojakäytännön
+          </a>
+        </v-card-text>
+      </template>
+    </v-checkbox>
 
     <v-card flat rounded="lg" class="text-button d-flex align-center justify-center" @click="submit" color="primary"
       height="40" block>

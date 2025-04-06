@@ -160,6 +160,11 @@ async function submit() {
     // Set the loading state
     loading.value = true;
 
+    if (!step4Component.value?.data.compilance) {
+      step4Component.value.error = 'compilance';
+      return;
+    }
+
     // Validate the name
     if (!step4Component.value?.data.name || step4Component.value?.data.name?.length < 2) {
       step4Component.value.error = 'name';

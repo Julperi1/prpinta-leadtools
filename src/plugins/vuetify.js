@@ -1,4 +1,4 @@
-import { VBtn, VCard, VCardTitle, VBottomSheet, VTextField, VTextarea, VIcon, VSheet, VDivider, VBtnToggle, VCardSubtitle, VCardText, VAvatar, VSelect, VWindow, VWindowItem, VToolbar, VSpacer, VDialog } from 'vuetify/components';
+import { VBtn, VCard, VCardTitle, VBottomSheet, VTextField, VTextarea, VIcon, VSheet, VDivider, VBtnToggle, VCardSubtitle, VCardText, VAvatar, VSelect, VWindow, VWindowItem, VToolbar, VSpacer, VDialog, VCheckbox } from 'vuetify/components';
 import { createVuetify } from 'vuetify';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import { mdiNumeric1, mdiNumeric2, mdiNumeric3, mdiNumeric4, mdiNumeric5, mdiRefresh, mdiArrowRight, mdiCheck, mdiFormatListCheckbox, mdiCalculator, mdiAccountBoxOutline, mdiClipboardOutline, mdiArrowLeft, mdiFormatPaint, mdiHomeRoof, mdiClose, mdiSend } from '@mdi/js';
@@ -15,7 +15,7 @@ const vuetify = createVuetify({
     },
   },
   components: {
-    VBtn, VCardTitle, VCard, VTextField, VTextarea, VBottomSheet, VToolbar, VSpacer, VDialog,
+    VBtn, VCardTitle, VCard, VTextField, VTextarea, VBottomSheet, VToolbar, VSpacer, VDialog, VCheckbox,
     VIcon, VSheet, VDivider, VBtnToggle, VCardSubtitle, VCardText, VAvatar, VSelect, VWindow, VWindowItem
   },
   icons: {
