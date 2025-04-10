@@ -7,6 +7,14 @@ import Floors from '@/components/paintcalc/pages/Floors.vue';
 import Walls from '@/components/paintcalc/pages/Walls.vue';
 import Result from '@/components/paintcalc/pages/Result.vue';
 
+const UNDER_200_SQUARE_PRICE = 42;
+const UNDER_500_SQUARE_PRICE = 40;
+const UNDER_1000_SQUARE_PRICE = 38;
+const FLOORS_1_5_MULTIPLIER = 1.2;
+const FLOORS_2_MULTIPLIER = 1.3;
+const WALLS_1_2_MULTIPLIER = 1.2;
+const WALLS_3_4_MULTIPLIER = 1.3;
+
 const submitForm = inject('submitForm');
 const step1Component = ref(null);
 const step2Component = ref(null);
@@ -49,11 +57,11 @@ const computedPrice = computed(() => {
    * 501 - 1000: 38 € / m²
    */
   if (data.squares < 200) {
-    price = 48 * data.squares;
+    price = UNDER_200_SQUARE_PRICE * data.squares;
   } else if (data.squares < 500) {
-    price = 42 * data.squares;
+    price = UNDER_500_SQUARE_PRICE * data.squares;
   } else {
-    price = 38 * data.squares;
+    price = UNDER_1000_SQUARE_PRICE * data.squares;
   }
 
   /**
@@ -63,9 +71,9 @@ const computedPrice = computed(() => {
    * 2.0: price * 1.3
    */
   if (data.floors == '1.5') {
-    price *= 1.2;
+    price *= FLOORS_1_5_MULTIPLIER;
   } else if (data.floors == '2.0') {
-    price *= 1.3;
+    price *= FLOORS_2_MULTIPLIER;
   }
 
   /**
@@ -75,9 +83,9 @@ const computedPrice = computed(() => {
    * 3-4: price * 1.5
    */
   if (data.walls == '1-2') {
-    price *= 1.2;
+    price *= WALLS_1_2_MULTIPLIER;
   } else if (data.walls == '3-4') {
-    price *= 1.5;
+    price *= WALLS_3_4_MULTIPLIER;
   }
 
   return parseInt(price);
