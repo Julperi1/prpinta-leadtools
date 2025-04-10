@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, inject } from 'vue';
 const VITE_COMPILANCE_URL = import.meta.env.VITE_COMPILANCE_URL;
-
+import CheckmarkAnimarionSvg from '@/components/CheckmarkAnimarionSvg.vue';
 onMounted(() => {
   setTimeout(() => {
     const now = new Date();
@@ -73,7 +73,7 @@ function close() {
   <v-dialog v-model="isOpen" max-width="500">
     <v-card rounded="lg" class="pa-2 lf-backgroung">
       <v-card-title class="d-flex align-center justify-space-between pa-2">
-        <b class=""> Moro! Projekti suunnitteilla?</b>
+        <b class=""> Projekti suunnitteilla?</b>
 
         <v-sheet class="bg-transparent">
           <v-icon icon="$close" @click="close"></v-icon>
@@ -87,7 +87,7 @@ function close() {
       </v-sheet>
 
       <!-- Form fields -->
-      <v-sheet class="mt-2 pa-2 bg-transparent">
+      <v-sheet v-if="!submitted" class="mt-2 pa-2 bg-transparent">
         <v-sheet class="d-flex bg-transparent">
           <v-sheet width="50%" class="pr-1 bg-transparent">
             <v-text-field v-model="data.name" label="Nimi / Yritys *" density="compact" variant="solo-filled" flat
@@ -146,6 +146,20 @@ function close() {
           height="40" block>
           Lähetä
         </v-card>
+      </v-sheet>
+      <v-sheet v-else class="my-2">
+        <v-divider class="mb-6"></v-divider>
+        <v-sheet class="d-flex justify-center align-center">
+          <CheckmarkAnimarionSvg />
+        </v-sheet>
+        <v-card-title class="pb-0 text-center">
+          Kiitos tarjouspyynnöstä!
+        </v-card-title>
+
+        <v-card-text class="text-center pt-2">
+          Olemme vastaanottaneet sen ja otamme sinuun yhteyttä 24 tunnin kuluessa.
+          <br />
+        </v-card-text>
       </v-sheet>
 
     </v-card>
