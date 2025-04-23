@@ -27,7 +27,10 @@ function prpinta_sitebot_shortcode() {
 }
 add_shortcode('sitebot-app', 'prpinta_sitebot_shortcode');
 
-
+function prpinta_popup_shortcode() {
+    return '<div id="popup-app"></div>';
+}
+add_shortcode('popup-app', 'prpinta_popup_shortcode');
 
 /**
  * --------------------------------------------------------------------------

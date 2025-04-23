@@ -2,6 +2,7 @@
 import { ref, onMounted, inject } from 'vue';
 const VITE_COMPILANCE_URL = import.meta.env.VITE_COMPILANCE_URL;
 import CheckmarkAnimarionSvg from '@/components/CheckmarkAnimarionSvg.vue';
+
 onMounted(() => {
   setTimeout(() => {
     const now = new Date();
@@ -38,8 +39,14 @@ async function submit() {
     for (const key of fields) if (!validate(key)) return;
 
     console.log(data.value);
-    const response = await submitForm(data.value, 'Sivubotti - tarjouspyyntö');
+    const response = await submitForm(data.value, 'Popup');
     if (response) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'leadtools_submit',
+        source: 'Popup',
+      });
+
       submitted.value = true;
     }
   } catch (error) {

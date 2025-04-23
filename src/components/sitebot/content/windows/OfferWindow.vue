@@ -38,6 +38,12 @@ async function submit() {
     console.log(data.value);
     const response = await submitForm(data.value, 'Sivubotti - tarjouspyyntö');
     if (response) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'leadtools_submit',
+        source: 'Sivubotti - tarjouspyyntö',
+      });
+
       submitted.value = true;
     }
   } catch (error) {

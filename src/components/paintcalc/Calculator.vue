@@ -219,6 +219,12 @@ async function submit() {
       console.log(response);
 
       currentStep.value += 1;
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'leadtools_submit',
+        source: 'Maalauslaskuri',
+      });
     }
   } catch (error) {
     console.log(error);

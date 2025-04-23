@@ -30,6 +30,12 @@ async function submit() {
     console.log(data.value);
     const response = await submitForm(data.value, 'Sivubotti - yhteydenottopyyntö');
     if (response) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'leadtools_submit',
+        source: 'Sivubotti - yhteydenottopyyntö',
+      });
+
       submitted.value = true;
     }
   } catch (error) {
