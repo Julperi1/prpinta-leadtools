@@ -3,7 +3,7 @@
  * Plugin Name: PR-Pintakäsittely Custom LTP
  * Description: Collection of tools for PR-Pintakäsittely Oy
  * Author: LeadiFix
- * Version: 1.0
+ * Version: 1.01
  * Author URI: https://www.leadifix.fi
  */
 
@@ -62,6 +62,8 @@ function prpinta_enqueue_scripts() {
         wp_localize_script('prpinta_js_' . basename(reset($js_files)), 'prpinta_ajax', [
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('prpinta_lead_nonce'),
+            'enablePopup' => get_option('prpinta_enable_popup', false),
+            'popupText' => get_option('prpinta_popup_text', ''),
         ]);
     }
 }
@@ -278,7 +280,6 @@ function sendErrorEmail($errorMessage)
     } catch (Exception $e) {
         // Log error details for further analysis
         error_log("Error sending email: " . $e->getMessage());
-        sendErrorEmail($e);
     }
 }
 
@@ -305,6 +306,9 @@ add_action( 'admin_menu', 'prpinta_register_settings_page' );
 function prpinta_register_settings() {
     // Register the setting with a sanitization callback.
     register_setting( 'prpinta_settings_group', 'prpinta_leads_email', 'sanitize_email' );
+    register_setting('prpinta_settings_group', 'prpinta_enable_popup', 'rest_sanitize_boolean');
+    register_setting('prpinta_settings_group', 'prpinta_popup_text', 'sanitize_text_field');
+
     
     // Add a section (optional).
     add_settings_section(
@@ -322,6 +326,23 @@ function prpinta_register_settings() {
         'prpinta-settings',                  // Page slug.
         'prpinta_main_section'               // Section ID.
     );
+
+    add_settings_field(
+        'prpinta_enable_popup_field',
+        'Ota popup käyttöön',
+        'prpinta_enable_popup_field_callback',
+        'prpinta-settings',
+        'prpinta_main_section'
+    );
+    
+    add_settings_field(
+        'prpinta_popup_text_field',
+        'Popup-teksti',
+        'prpinta_popup_text_field_callback',
+        'prpinta-settings',
+        'prpinta_main_section'
+    );
+    
 }
 add_action( 'admin_init', 'prpinta_register_settings' );
 
@@ -334,6 +355,16 @@ function prpinta_section_text() {
 function prpinta_leads_email_field_callback() {
     $email = get_option( 'prpinta_leads_email', 'myynti@leadifix.fi' );
     echo "<input type='email' name='prpinta_leads_email' value='" . esc_attr( $email ) . "' />";
+}
+
+function prpinta_enable_popup_field_callback() {
+    $enabled = get_option('prpinta_enable_popup', false);
+    echo "<input type='checkbox' name='prpinta_enable_popup' value='1' " . checked(1, $enabled, false) . " />";
+}
+
+function prpinta_popup_text_field_callback() {
+    $text = get_option('prpinta_popup_text', '');
+    echo "<textarea name='prpinta_popup_text' rows='4' cols='50'>" . esc_textarea($text) . "</textarea>";
 }
 
 // Settings page callback.

@@ -5,6 +5,9 @@ import CheckmarkAnimarionSvg from '@/components/CheckmarkAnimarionSvg.vue';
 
 onMounted(() => {
   setTimeout(() => {
+    if (!prpinta_ajax?.enablePopup) return;
+    text.value = prpinta_ajax?.popupText;
+
     const now = new Date();
     localStorage.setItem('popupLastOpen', now.toISOString());
     isOpen.value = true;
@@ -20,6 +23,7 @@ const services = ref([
   'Peltikaton maalaus', 'Muu (kirjoita viestiin)',
 ]);
 
+const text = ref('');
 const submitted = ref(false);
 const error = ref(null);
 const data = ref({
@@ -88,9 +92,7 @@ function close() {
       </v-card-title>
 
       <v-sheet class="mb-2 mx-2 bg-transparent">
-        Saat meiltä talon maalauksen <b class="text-primary">maalien hinnasta 50% alennusta</b> kun kysyt tarjouksen
-        31.4 mennessä!
-        Jätä tarjouspyyntö tästä, ja hyödynnä tarjous! Tarjouspyyntö ei sido sinua mihinkään.
+        {{ text }}
       </v-sheet>
 
       <!-- Form fields -->
